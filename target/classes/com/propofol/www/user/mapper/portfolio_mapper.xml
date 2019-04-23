@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 
+  	Query문을 정의
+  	namespace : XML 내에서 중복된 id를 사용할 수 있도록 구분하는 것 (package와 비슷한 용도)
+   -->
+<mapper namespace="com.propofol.www.portfolio">
+	<resultMap type="kr.co.sist.domain.Notice" id="noticeResult">
+		<result column="NUM" property="num"/>
+		<result column="SUBJECT" property="subject"/>
+	</resultMap>
+	<select id="noticeList" resultMap="noticeResult">
+		SELECT NUM, SUBJECT
+		FROM (SELECT ROW_NUMBER() OVER(ORDER BY W_DATE DESC) R_NUM, NUM, SUBJECT
+		      FROM DIARY)
+		WHERE R_NUM BETWEEN 1 AND 5
+	</select>
+	<select id="loginCheck" parameterType="String" resultType="int">
+		SELECT COUNT(USER_ID)
+		FROM PORTFOLIO
+		WHERE USER_ID = #{ user_id }
+	</select>
+</mapper>
