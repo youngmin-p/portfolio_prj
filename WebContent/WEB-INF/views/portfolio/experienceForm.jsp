@@ -17,10 +17,10 @@
 
 <script type="text/javascript">
 	$(function() {
+		$("#exp_cd").val("${ exp_cd }").prop("selected", true);
+		
 		$("#exp_cd").change(function() {
-			alert($("#exp_cd").val());
-			
-			// 선택에 따라 다르게 .do 요청을 보낸다.
+			location.href = "./experienceForm.do?exp_cd=" + $("#exp_cd").val();
 		}); // change
 	}); // ready
 </script>
@@ -52,16 +52,17 @@
 					<span style="float: right; width: 150px;">
 						<label for="exp_cd">페이지 선택</label>
 						<select name="exp_cd" id="exp_cd" class="custom-select" style="text-align-last: center;">
-							<option value="edu">교육사항</option>
-							<option value="prj">프로젝트</option>
+							<option value="Edu">교육사항</option>
+							<option value="Prj">프로젝트</option>
 						</select>
 					</span>
 					<div style="clear: both;"></div>
 				</div>
 				<!-- import -->
 				<%-- <c:import url="/WEB-INF/views/portfolio/experiencePrjSlice.jsp"/> --%>
-				<c:import url="/WEB-INF/views/portfolio/experiencePrjSlice.jsp"/>
-				<c:import url="/WEB-INF/views/portfolio/experience${ exp_cd }Slice.jsp"/>
+				<%-- <c:import url="/WEB-INF/views/portfolio/experiencePrjSlice.jsp"/> --%>
+				<%-- <c:import url="./experience${ requestScope.exp_cd }Slice.jsp"/> --%>
+				<c:import url="./experience${ exp_cd }Slice.jsp"/>
 			</div>
 			<!-- section-footer -->
 			<div id="section-footer">

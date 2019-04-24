@@ -1,5 +1,6 @@
 package com.propofol.www.user.portfolio.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,18 +14,25 @@ import com.propofol.www.user.portfolio.vo.MyPortfolioVO;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 @Controller
 public class PortfolioController {
 	
+	@Autowired(required=false)
+	private MyPortfolioService mp_service;
+	
+	/**
+	 * 내 포트폴리오 관리 화면 최초 진입점
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/portfolio/myPortfolio.do", method=GET)
 	public String moveMyPortfolio(HttpSession session) {
 		String user_id = (String) session.getAttribute("user_id");
 		
-		user_id = "park";
+		// temp value
+		user_id = "young";
 		
 		return "forward:/portfolio/chkLogin.do?user_id=" + user_id;
 	} // moveMyPortfolio
@@ -35,12 +43,10 @@ public class PortfolioController {
 	 * @return
 	 */
 	@RequestMapping(value="/portfolio/chkLogin.do", method=GET)
-	public String chkLogin(@RequestParam("user_id") String user_id) {
+	public String chkLogin(@RequestParam(name="user_id") String user_id) {
 		int loginCnt = 0;
 		
 		String url = "";
-		
-		MyPortfolioService mp_service = new MyPortfolioService();
 		
 		loginCnt = mp_service.chkLogin(user_id);
 		
@@ -52,32 +58,34 @@ public class PortfolioController {
 		
 		if (loginCnt == 1) {
 			// user_id가 null이 아니면 writeState로 이동
-//			url = "forward:/portfolio/writeState.do?user_id=" + user_id;
-			url = "forward:/portfolio/writeState.do?";
+			url = "forward:/portfolio/writeState.do";
 		} // end else
 		
 		return url;
 	} // chkLogin
 	
+	/**
+	 * 포트폴리오 등록 여부 확인
+	 * @param user_id
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/portfolio/writeState.do", method=GET)
-	public String writeState(@RequestParam("user_id") String user_id, HttpSession session) {
+	public String writeState(@RequestParam(name="user_id") String user_id, HttpSession session) {
 		int result = 0;
 		
 		String session_id = (String) session.getAttribute("user_id");
 		String url = "";
 		
-		System.out.println("session_id = " + session_id);
-		System.out.println("user_id = " + user_id);
+		System.out.println("session_id = " + session_id + " / user_id = " + user_id);
 		
 		if (user_id.equals(session_id)) {
 			// portfolio 테이블에서 user_id가 존재하면 result가 1이고, 없으면 0
-			// DB 조회 수행 (Service)
-			MyPortfolioService mp_service = new MyPortfolioService();
-			
 			// user_id 존재 유무에 따라 1 또는 0을 반환
-//			result = mp_service.chkWriteState(user_id);
+			result = mp_service.chkWriteState(user_id);
 		} // end if
 		
+		// temp value
 		result = 1;
 		
 		// 로그인 상태에 따라 분기
@@ -88,28 +96,35 @@ public class PortfolioController {
 		
 		if (result == 1) {
 			// user_id가 null이 아니면 showMyPortfolio로 이동
-			url = "forward:/portfolio/showMyPortfolio.do?";
-		} // end else
-		
-		System.out.println("----- writeState에서의 user_id : " + user_id);
+			url = "forward:/portfolio/showMyPortfolio.do";
+		} // end if
 		
 		return url;
 	} // writeState
 	
+	/**
+	 * 포트폴리오 조회 수행
+	 * @param user_id
+	 * @param session
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/portfolio/showMyPortfolio.do", method=GET)
-	public String showMyPortfolio(@RequestParam("user_id") String user_id, HttpSession session, Model model) {
+	public String showMyPortfolio(@RequestParam(name="user_id") String user_id, HttpSession session, Model model) {
 		String session_id = (String) session.getAttribute("user_id");
 		
-//		if (user_id.equals(session_id)) {
-//			MyPortfolioService mp_service = new MyPortfolioService();
-//			
-//			// 포트폴리오 조회 (섬네일, 제목)
-//			MyPortfolioSearch mp_search = mp_service.searchMyPortfolio(user_id);
-//			
-//			model.addAttribute("mp_search", mp_search);
-//		} // end if
+		if (user_id.equals(session_id)) {
+			// 포트폴리오 조회 (섬네일, 제목)
+			MyPortfolioSearch mp_search = mp_service.searchMyPortfolio(user_id);
+			
+			model.addAttribute("mp_search", mp_search);
+		} // end if
 		
 		System.out.println("----- showMyPortfolio에 들어옴 : " + user_id);
+		
+		// temp line
+		MyPortfolioSearch mp_search = mp_service.searchMyPortfolio(user_id);
+		model.addAttribute("mp_search", mp_search);
 		
 		return "portfolio/myPortfolio";
 	} // moveMyPortfolio
@@ -166,12 +181,22 @@ public class PortfolioController {
 	// -------------------- 포트폴리오 관련 경험 시작 -------------------- //
 	
 	@RequestMapping(value="/portfolio/experienceForm.do", method=GET)
-	public String experienceForm(HttpSession session) {
+	public String experienceForm(@RequestParam(name="exp_cd", defaultValue="Edu", required=false) String exp_cd, HttpSession session, Model model) {
 		// session에 저장된 아이디를 받아서 관련 경험에 등록된 정보를 조회
 		String user_id = (String) session.getAttribute("user_id");
 		
-		// 관련 경험 서비스 조회
+		System.out.println("----- exp_cd val=" + exp_cd);
 		
+		// 관련 경험 서비스 조회
+		if ("Prj".equals(exp_cd)) {
+			// 프로젝트 관련 경험 선택 시
+		} // end if
+		
+		if ("Edu".equals(exp_cd)) {
+			// 교육사항 관련 경험 선택 시
+		} // end if
+		
+		model.addAttribute("exp_cd", exp_cd);
 		
 		return "portfolio/experienceForm";
 	} // experienceForm

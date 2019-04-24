@@ -6,9 +6,15 @@ import java.io.Reader;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MyBatisDAO {
+	
+	@Autowired(required=false)
 	private static MyBatisDAO mb_dao;
+	
 	private SqlSessionFactory ssf = null;
 	
 	private MyBatisDAO() { } // MyBatisDAO
@@ -30,7 +36,7 @@ public class MyBatisDAO {
 		
 		try {
 			// 1. 설정용 xml 로딩
-			reader = Resources.getResourceAsReader("com/propofol/www/dao/mybatis_config.xml");
+			reader = Resources.getResourceAsReader("com/propofol/www/user/dao/mybatis_config.xml");
 			
 			// 2. MyBatis Framework 생성
 			SqlSessionFactoryBuilder ssfb = new SqlSessionFactoryBuilder();

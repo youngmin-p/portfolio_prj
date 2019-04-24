@@ -47,7 +47,7 @@
 					<span style="float: left; font-weight: bold;">*포트폴리오 등록 및 수정이 가능합니다.</span>
 					<span style="float: right; width: 150px;">
 						<label for="permit_st">관리자 승인 여부</label>
-						<input type="text" name="permit_st" id="permit_st" class="text-center" readonly="readonly" style="margin-bottom: 10px; width: 150px; height: 38px; font-weigth: bold;"/>
+						<input type="text" name="permit_st" id="permit_st" class="form-control text-center" readonly="readonly" style="margin-bottom: 10px; width: 150px; height: 38px; font-weigth: bold;"/>
 						<label for="public_st">공개 여부 설정</label>
 						<select name="public_st" id="public_st" class="custom-select" style="text-align-last: center;">
 							<option value="public">공개</option>
@@ -74,7 +74,7 @@
 						<div class="col-3"></div>
 						<div class="col-6">
 							<label for="title">제목</label>
-							<input type="text" name="title" id="title" class="form-control" placeholder="제목을 입력해주세요. (20자 이내)" maxlength="20"/>
+							<input type="text" value="${ mp_search.title }" name="title" id="title" class="form-control" placeholder="제목을 입력해주세요. (20자 이내)" maxlength="20"/>
 							<!-- 제목에 대한 에러 메시지 출력 -->
 							<div style="margin-top: 8px; height: 30px; color: #FF0000;">
 								<div id="warnTitle" style="visibility: hidden;"></div>

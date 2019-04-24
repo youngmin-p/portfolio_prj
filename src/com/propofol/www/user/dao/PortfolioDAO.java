@@ -1,8 +1,15 @@
 package com.propofol.www.user.dao;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
+
+@Component
 public class PortfolioDAO {
+	
+	@Autowired(required=false)
 	private static PortfolioDAO p_dao;
 	
 	private PortfolioDAO() { } // PortfolioDAO
@@ -25,14 +32,24 @@ public class PortfolioDAO {
 		
 		SqlSession ss = MyBatisDAO.getInstance().getSessionFactory().openSession();
 		
-		result = ss.selectOne("loginCheck", user_id);
+		result = ss.selectOne("writeState", user_id);
 		
 		ss.close();
 		
 		return result;
 	} // selectWriteState
 	
-	
+	public MyPortfolioSearch selectMyPortfolio(String user_id) {
+		MyPortfolioSearch mp_search = null;
+		
+		SqlSession ss = MyBatisDAO.getInstance().getSessionFactory().openSession();
+		
+		mp_search = ss.selectOne("myPortfolio", user_id);
+		
+		ss.close();
+		
+		return mp_search;
+	} // selectMyPortfolio
 	
 	
 //	/**
@@ -40,7 +57,12 @@ public class PortfolioDAO {
 //	 * @param args
 //	 */
 //	public static void main(String[] args) {
-//		PortfolioDAO pf_dao = new PortfolioDAO();
+////		int result = PortfolioDAO.getInstance().selectWriteState("young");
+////		System.out.println(result);
+//		
+//		MyPortfolioSearch mp_search = PortfolioDAO.getInstance().selectMyPortfolio("young");
+//		
+//		System.out.println(mp_search.getThumbnail_img() + " / " + mp_search.getTitle());
 //		
 //	} // main
 	

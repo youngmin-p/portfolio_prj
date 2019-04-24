@@ -1,10 +1,16 @@
 package com.propofol.www.user.portfolio.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.propofol.www.user.dao.PortfolioDAO;
 import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
 import com.propofol.www.user.portfolio.vo.MyPortfolioVO;
 
+@Component
 public class MyPortfolioService {
+	
+	@Autowired(required=false)
 	private PortfolioDAO p_dao;
 	
 	public MyPortfolioService() {
@@ -54,7 +60,7 @@ public class MyPortfolioService {
 		MyPortfolioSearch mp_search = null;
 		
 		// DAO Á¢±Ù
-		
+		mp_search = p_dao.selectMyPortfolio(user_id);
 		
 		return mp_search;
 	} // searchMyPortfolio

@@ -2,11 +2,8 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <!-- 
-  	Query문을 정의
-  	namespace : XML 내에서 중복된 id를 사용할 수 있도록 구분하는 것 (package와 비슷한 용도)
-   -->
-<mapper namespace="com.propofol.www.portfolio">
+<mapper namespace="com.propofol.www.user.portfolio">
+	<!-- 
 	<resultMap type="kr.co.sist.domain.Notice" id="noticeResult">
 		<result column="NUM" property="num"/>
 		<result column="SUBJECT" property="subject"/>
@@ -17,8 +14,18 @@
 		      FROM DIARY)
 		WHERE R_NUM BETWEEN 1 AND 5
 	</select>
-	<select id="loginCheck" parameterType="String" resultType="int">
+	 -->
+	
+	<!-- 포트폴리오 등록 여부 조회 -->
+	<select id="writeState" parameterType="String" resultType="int">
 		SELECT COUNT(USER_ID)
+		FROM PORTFOLIO
+		WHERE USER_ID = #{ user_id }
+	</select>
+	
+	<!-- 내 포트폴리오 조회 -->
+	<select id="myPortfolio" parameterType="String" resultType="com.propofol.www.user.portfolio.domain.MyPortfolioSearch">
+		SELECT THUMBNAIL_IMG, TITLE
 		FROM PORTFOLIO
 		WHERE USER_ID = #{ user_id }
 	</select>
