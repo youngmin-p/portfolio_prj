@@ -5,14 +5,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
+import com.propofol.www.user.portfolio.vo.MyPortfolioVO;
 
 @Component
 public class PortfolioDAO {
 	
 	@Autowired(required=false)
+	private MyBatisDAO mb_dao;
+	
 	private static PortfolioDAO p_dao;
 	
-	private PortfolioDAO() { } // PortfolioDAO
+	private PortfolioDAO() {
+		mb_dao = MyBatisDAO.getInstance();
+		
+	} // PortfolioDAO
 	
 	public static PortfolioDAO getInstance() {
 		if (p_dao == null) {
@@ -22,6 +28,7 @@ public class PortfolioDAO {
 		return p_dao;
 	} // getInstance
 	
+	
 	/**
 	 * 포트폴리오 등록 여부 조회
 	 * @param user_id
@@ -30,7 +37,7 @@ public class PortfolioDAO {
 	public int selectWriteState(String user_id) {
 		int result = 0;
 		
-		SqlSession ss = MyBatisDAO.getInstance().getSessionFactory().openSession();
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
 		
 		result = ss.selectOne("writeState", user_id);
 		
@@ -39,10 +46,15 @@ public class PortfolioDAO {
 		return result;
 	} // selectWriteState
 	
+	/**
+	 * 내 포트폴리오 관리 조회
+	 * @param user_id
+	 * @return
+	 */
 	public MyPortfolioSearch selectMyPortfolio(String user_id) {
 		MyPortfolioSearch mp_search = null;
 		
-		SqlSession ss = MyBatisDAO.getInstance().getSessionFactory().openSession();
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
 		
 		mp_search = ss.selectOne("myPortfolio", user_id);
 		
@@ -51,6 +63,28 @@ public class PortfolioDAO {
 		return mp_search;
 	} // selectMyPortfolio
 	
+	/**
+	 * 내 포트폴리오 관리 수정
+	 * @param mp_vo
+	 * @return
+	 */
+	public int updateMyPortfolio(MyPortfolioVO mp_vo) {
+		int result = 0;
+		
+		// temp data
+		mp_vo = new MyPortfolioVO(
+				"young", "heollo.png", "제발 좀...", "Y");
+		
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
+		
+		result = ss.update("updateMyPortfolio", mp_vo);
+		
+		ss.commit();
+		
+		ss.close();
+		
+		return result;
+	} // updateMyPortfolio
 	
 //	/**
 //	 * unit test
@@ -60,9 +94,15 @@ public class PortfolioDAO {
 ////		int result = PortfolioDAO.getInstance().selectWriteState("young");
 ////		System.out.println(result);
 //		
-//		MyPortfolioSearch mp_search = PortfolioDAO.getInstance().selectMyPortfolio("young");
+////		MyPortfolioSearch mp_search = PortfolioDAO.getInstance().selectMyPortfolio("young");
+////		System.out.println(mp_search.getThumbnail_img() + " / " + mp_search.getTitle() + " / " + mp_search.getPermit_st());
 //		
-//		System.out.println(mp_search.getThumbnail_img() + " / " + mp_search.getTitle());
+//		int result;
+//		MyPortfolioVO mp_vo = new MyPortfolioVO("young", "hello.png", "수정 완료!", "Y");
+//		PortfolioDAO p_dao = new PortfolioDAO();
+//		result = p_dao.updateMyPortfolio(mp_vo);
+////		result = PortfolioDAO.getInstance().updateMyPortfolio(mp_vo);
+//		System.out.println("---- update result = " + result);
 //		
 //	} // main
 	

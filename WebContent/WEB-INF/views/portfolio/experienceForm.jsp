@@ -17,7 +17,7 @@
 
 <script type="text/javascript">
 	$(function() {
-		$("#exp_cd").val("${ exp_cd }").prop("selected", true);
+		$("#exp_cd").val("${ requestScope.exp_cd }").prop("selected", true);
 		
 		$("#exp_cd").change(function() {
 			location.href = "./experienceForm.do?exp_cd=" + $("#exp_cd").val();

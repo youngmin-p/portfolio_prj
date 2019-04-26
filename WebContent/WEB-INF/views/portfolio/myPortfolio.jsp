@@ -17,8 +17,32 @@
 
 <script type="text/javascript">
 	$(function() {
+		$("#permit_st").val("${ mp_search.permit_st }");
 		
+		$("#btnAdd").click(function() {
+			$("[name='mpFrm']").prop("action", "./myPortfolioAdd.do");
+			
+			$("[name='mpFrm']").submit();
+		}); // click
+		
+		$("#btnModify").click(function() {
+			$("#mpFrm").attr("action", "./myPortfolioModify.do");
+			
+			$("#mpFrm").submit();
+		}); // click
+		
+		$("#btnRemove").click(function() {
+			confirm("정말 삭제하실 거에요?");
+			
+			
+		}); // click
 	}); // ready
+	
+	$(window).load(function() {
+		if ("${ requestScope.msg }" != "") {
+			alert("${ requestScope.msg }");
+		} // end if
+	}); // load
 </script>
 </head>
 <body>
@@ -43,27 +67,27 @@
 			<!-- section-main -->
 	    	<!-- 자기소개 -->
 		    <div id="section-main">
-				<div style="color: #000000;">
-					<span style="float: left; font-weight: bold;">*포트폴리오 등록 및 수정이 가능합니다.</span>
-					<span style="float: right; width: 150px;">
-						<label for="permit_st">관리자 승인 여부</label>
-						<input type="text" name="permit_st" id="permit_st" class="form-control text-center" readonly="readonly" style="margin-bottom: 10px; width: 150px; height: 38px; font-weigth: bold;"/>
-						<label for="public_st">공개 여부 설정</label>
-						<select name="public_st" id="public_st" class="custom-select" style="text-align-last: center;">
-							<option value="public">공개</option>
-							<option value="private">비공개</option>
-						</select>
-					</span>
-					<div style="clear: both;"></div>
-				</div>
-				<form name="mpFrm">
+				<form method="POST" enctype="multipart/form-data" name="mpFrm" id="mpFrm">
+					<div style="color: #000000;">
+						<span style="float: left; font-weight: bold;">*포트폴리오 등록 및 수정이 가능합니다.</span>
+						<span style="float: right; width: 150px;">
+							<label for="permit_st">관리자 승인 여부</label>
+							<input type="text" name="permit_st" id="permit_st" class="form-control text-center" readonly="readonly" style="margin-bottom: 10px; width: 150px; height: 38px; font-weigth: bold;"/>
+							<label for="public_st">공개 여부 설정</label>
+							<select name="public_st" id="public_st" class="custom-select" style="text-align-last: center;">
+								<option value="public"${ mp_search.public_st eq 'Y' ? "selected='selected'" : "''" }>공개</option>
+								<option value="private"${ mp_search.public_st eq 'N' ? "selected='selected'" : "''" }>비공개</option>
+							</select>
+						</span>
+						<div style="clear: both;"></div>
+					</div>
 					<div class="form-group row" style="padding-left: 9px;">
 						<div class="col-3"></div>
 						<div class="col-6" style="text-align: center; margin-top: -60px;">
 							<img src="http://localhost:8080/propofol_prj/common/images/no_image.png" class="img-thumbnail" style="width: 300px; height: 300px;"/>
 							<!-- ajax 이용해서 전송 : button 클릭으로 $("#thumbnail").click() -->
 							<div style="margin-top: 10px;">
-								<input type="file" name="uploadImg" style="display:none;"/>
+								<input type="file" name="thumbnail_img" id="thumbnail_img" style="display:none;"/>
 								<label for="thumbnail" style="margin-right: 10px;">섬네일 이미지 등록</label>
 								<input type="button" value="업로드" name="thumbnail" id="thumbnail" class="btn btn-secondary"/>
 							</div>
@@ -86,7 +110,7 @@
 			</div>
 			<!-- section-footer -->
 			<div id="section-footer">
-				<input type="button" value="포트폴리오 삭제" name="btnRemove" class="btn btn-danger" style="margin-right: 15px;"/>
+				<input type="button" value="포트폴리오 삭제" name="btnRemove" id="btnRemove" class="btn btn-danger" style="margin-right: 15px;"/>
 				<!-- 포트폴리오 테이블 조회 시 아이디 검색 여부에 따라 다른 버튼을 보여준다. -->
 				<c:choose>
 				<c:when test="${ empty requestScope.isExist }">

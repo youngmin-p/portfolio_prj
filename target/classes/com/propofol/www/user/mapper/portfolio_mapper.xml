@@ -25,8 +25,15 @@
 	
 	<!-- 내 포트폴리오 조회 -->
 	<select id="myPortfolio" parameterType="String" resultType="com.propofol.www.user.portfolio.domain.MyPortfolioSearch">
-		SELECT THUMBNAIL_IMG, TITLE
+		SELECT THUMBNAIL_IMG, TITLE, PERMIT_ST, PUBLIC_ST
 		FROM PORTFOLIO
 		WHERE USER_ID = #{ user_id }
 	</select>
+	
+	<!-- 내 포트폴리오 수정 -->
+	<update id="updateMyPortfolio" parameterType="com.propofol.www.user.portfolio.vo.MyPortfolioVO">
+		UPDATE PORTFOLIO
+		SET THUMBNAIL_IMG = #{ thumbnail_img }, TITLE = #{ title }, PUBLIC_ST = #{ public_st }
+		WHERE USER_ID = #{ user_id }
+	</update>
 </mapper>

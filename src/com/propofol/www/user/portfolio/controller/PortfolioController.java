@@ -14,6 +14,9 @@ import com.propofol.www.user.portfolio.vo.MyPortfolioVO;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -27,7 +30,7 @@ public class PortfolioController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value="/portfolio/myPortfolio.do", method=GET)
+	@RequestMapping(value="/portfolio/myPortfolio.do", method={GET, POST})
 	public String moveMyPortfolio(HttpSession session) {
 		String user_id = (String) session.getAttribute("user_id");
 		
@@ -42,7 +45,7 @@ public class PortfolioController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value="/portfolio/chkLogin.do", method=GET)
+	@RequestMapping(value="/portfolio/chkLogin.do", method={GET, POST})
 	public String chkLogin(@RequestParam(name="user_id") String user_id) {
 		int loginCnt = 0;
 		
@@ -70,7 +73,7 @@ public class PortfolioController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value="/portfolio/writeState.do", method=GET)
+	@RequestMapping(value="/portfolio/writeState.do", method={GET, POST})
 	public String writeState(@RequestParam(name="user_id") String user_id, HttpSession session) {
 		int result = 0;
 		
@@ -109,7 +112,7 @@ public class PortfolioController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/portfolio/showMyPortfolio.do", method=GET)
+	@RequestMapping(value="/portfolio/showMyPortfolio.do", method={GET, POST})
 	public String showMyPortfolio(@RequestParam(name="user_id") String user_id, HttpSession session, Model model) {
 		String session_id = (String) session.getAttribute("user_id");
 		
@@ -118,6 +121,7 @@ public class PortfolioController {
 			MyPortfolioSearch mp_search = mp_service.searchMyPortfolio(user_id);
 			
 			model.addAttribute("mp_search", mp_search);
+			model.addAttribute("isExist", true);
 		} // end if
 		
 		System.out.println("----- showMyPortfolio에 들어옴 : " + user_id);
@@ -125,28 +129,51 @@ public class PortfolioController {
 		// temp line
 		MyPortfolioSearch mp_search = mp_service.searchMyPortfolio(user_id);
 		model.addAttribute("mp_search", mp_search);
+		model.addAttribute("isExist", true);
 		
 		return "portfolio/myPortfolio";
 	} // moveMyPortfolio
 	
-	@RequestMapping(value="/portfolio/myPortfolioAdd.do", method=GET)
+	@RequestMapping(value="/portfolio/myPortfolioAdd.do", method=POST)
 	public String addMyPortfolio(MyPortfolioVO mp_vo, HttpSession session) {
 		String session_id = (String) session.getAttribute("user_id");
 		
 		// 포트폴리오 추가
 		
 		
-		return "portfolio/showMyPortfolio.do?user_id" + session_id;
+		return "redirect:/portfolio/myPortfolio.do";
 	} // addMyPortfolio
 	
-	@RequestMapping(value="/portfolio/myPortfolioModify.do", method=GET)
-	public String modifyMyPortfolio(MyPortfolioVO mp_vo, HttpSession session) {
-		String session_id = (String) session.getAttribute("user_id");
+	/**
+	 * 포트폴리오 수정
+	 * multipart/form-data는 parameter를 VO로 받을 수 없다.
+	 * @param mp_vo
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="/portfolio/myPortfolioModify.do", method=POST)
+	public String modifyMyPortfolio(HttpServletRequest request, HttpSession session, Model model) {
+		int result = 0;
 		
-		// 포트폴리오 수정
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
 		
+		request.setAttribute("user_id", user_id);
 		
-		return "portfolio/showMyPortfolio.do?user_id" + session_id;
+		try {
+			result = mp_service.modifyMyPortfolio(request);
+			
+			if (result == 1) {
+				moveURL = "forward:myPortfolio.do";
+				
+				// 여기부터 작업 시작 (19-04-26 18:08)
+				model.addAttribute("msg", user_id + "님의 포트폴리오가 성공적으로 수정되었습니다!");
+			} // end if
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} // end catch
+		
+		return moveURL;
 	} // modifyMyPortfolio
 	
 	@RequestMapping(value="/portfolio/myPortfolioRemove.do", method=GET)
@@ -156,7 +183,7 @@ public class PortfolioController {
 		// 포트폴리오 삭제
 		
 		
-		return "portfolio/showMyPortfolio.do?user_id" + session_id;
+		return "redirect:/portfolio/myPortfolio.do";
 	} // removeMyPortfolio
 	
 	// -------------------- 포트폴리오 세부 업무 처리 시작 -------------------- //

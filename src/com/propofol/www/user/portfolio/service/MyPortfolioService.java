@@ -1,8 +1,14 @@
 package com.propofol.www.user.portfolio.service;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.propofol.www.user.dao.PortfolioDAO;
 import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
 import com.propofol.www.user.portfolio.vo.MyPortfolioVO;
@@ -83,12 +89,19 @@ public class MyPortfolioService {
 	 * 포트폴리오 수정
 	 * @param mp_vo
 	 * @return
+	 * @throws IOException 
 	 */
-	public int modifyMyPortfolio(MyPortfolioVO mp_vo) {
+	public int modifyMyPortfolio(HttpServletRequest request) throws IOException {
 		int result = 0;
 		
-		// DAO 접근
+		MultipartRequest mr = new MultipartRequest(
+				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
 		
+		MyPortfolioVO mp_vo = new MyPortfolioVO(
+				mr.getParameter("user_id"), mr.getFilesystemName("thumbnail_img"), 
+				mr.getParameter("title"), mr.getParameter("public_st"));
+		
+		result = p_dao.updateMyPortfolio(mp_vo);
 		
 		return result;
 	} // modifyMyPortfolio
