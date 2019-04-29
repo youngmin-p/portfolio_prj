@@ -47,7 +47,7 @@ public class PortfolioDAO {
 	} // selectWriteState
 	
 	/**
-	 * 내 포트폴리오 관리 조회
+	 * 내 포트폴리오 조회
 	 * @param user_id
 	 * @return
 	 */
@@ -64,16 +64,31 @@ public class PortfolioDAO {
 	} // selectMyPortfolio
 	
 	/**
-	 * 내 포트폴리오 관리 수정
+	 * 내 포트폴리오 등록
+	 * @param mp_vo
+	 * @return
+	 */
+	public int insertMyPortfolio(MyPortfolioVO mp_vo) {
+		int result = 0;
+		
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
+		
+		result = ss.insert("insertMyPortfolio", mp_vo);
+		
+		ss.commit();
+		
+		ss.close();
+		
+		return result;
+	} // insertMyPortfolio
+	
+	/**
+	 * 내 포트폴리오 수정
 	 * @param mp_vo
 	 * @return
 	 */
 	public int updateMyPortfolio(MyPortfolioVO mp_vo) {
 		int result = 0;
-		
-		// temp data
-		mp_vo = new MyPortfolioVO(
-				"young", "heollo.png", "제발 좀...", "Y");
 		
 		SqlSession ss = mb_dao.getSessionFactory().openSession();
 		
@@ -86,6 +101,25 @@ public class PortfolioDAO {
 		return result;
 	} // updateMyPortfolio
 	
+	/**
+	 * 내 포트폴리오 삭제
+	 * @param user_id
+	 * @return
+	 */
+	public int deleteMyPortfolio(String user_id) {
+		int result = 0;
+		
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
+		
+		result = ss.delete("deleteMyPortfolio", user_id);
+		
+		ss.commit();
+		
+		ss.close();
+		
+		return result;
+	} // deleteMyPortfolio
+	
 //	/**
 //	 * unit test
 //	 * @param args
@@ -97,12 +131,22 @@ public class PortfolioDAO {
 ////		MyPortfolioSearch mp_search = PortfolioDAO.getInstance().selectMyPortfolio("young");
 ////		System.out.println(mp_search.getThumbnail_img() + " / " + mp_search.getTitle() + " / " + mp_search.getPermit_st());
 //		
-//		int result;
-//		MyPortfolioVO mp_vo = new MyPortfolioVO("young", "hello.png", "수정 완료!", "Y");
-//		PortfolioDAO p_dao = new PortfolioDAO();
-//		result = p_dao.updateMyPortfolio(mp_vo);
+////		int result;
+////		MyPortfolioVO mp_vo = new MyPortfolioVO("young", "hello.png", "수정 완료!", "Y");
+////		PortfolioDAO p_dao = new PortfolioDAO();
+////		result = p_dao.updateMyPortfolio(mp_vo);
 ////		result = PortfolioDAO.getInstance().updateMyPortfolio(mp_vo);
-//		System.out.println("---- update result = " + result);
+////		System.out.println("---- update result = " + result);
+//		
+////		PortfolioDAO p_dao = new PortfolioDAO();
+////		MyPortfolioVO mp_vo = new MyPortfolioVO("jung", "king.png", "나는 김정윤이야.", "N");
+////		int result = p_dao.insertMyPortfolio(mp_vo);
+////		System.out.println("결과 성공 시 1 반환 : " + result);
+//		
+////		PortfolioDAO p_dao = new PortfolioDAO();
+////		String user_id = "jung";
+////		int result = p_dao.deleteMyPortfolio(user_id);
+////		System.out.println("결과 성공 시 1 반환 : " + result);
 //		
 //	} // main
 	

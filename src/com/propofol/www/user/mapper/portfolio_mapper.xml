@@ -30,10 +30,21 @@
 		WHERE USER_ID = #{ user_id }
 	</select>
 	
+	<!-- 내 포트폴리오 등록 -->
+	<insert id="insertMyPortfolio" parameterType="com.propofol.www.user.portfolio.vo.MyPortfolioVO">
+		INSERT INTO PORTFOLIO (USER_ID, THUMBNAIL_IMG, TITLE, HITS, PUBLIC_ST) 
+		VALUES (#{ user_id }, #{ thumbnail_img }, #{ title }, 0, #{ public_st })
+	</insert>
+	
 	<!-- 내 포트폴리오 수정 -->
 	<update id="updateMyPortfolio" parameterType="com.propofol.www.user.portfolio.vo.MyPortfolioVO">
 		UPDATE PORTFOLIO
-		SET THUMBNAIL_IMG = #{ thumbnail_img }, TITLE = #{ title }, PUBLIC_ST = #{ public_st }
+		SET THUMBNAIL_IMG = #{ thumbnail_img }, TITLE = #{ title }, PUBLIC_ST = #{ public_st }, UPDATE_DT = SYSDATE
 		WHERE USER_ID = #{ user_id }
 	</update>
+	
+	<!-- 내 포트폴리오 삭제 -->
+	<delete id="deleteMyPortfolio" parameterType="String">
+		DELETE FROM PORTFOLIO WHERE USER_ID = #{ user_id }
+	</delete>
 </mapper>

@@ -58,65 +58,71 @@ public class MyPortfolioService {
 	// -------------------- 포트폴리오 접근 종료 -------------------- //
 	
 	/**
-	 * 포트폴리오 조회
+	 * 내 포트폴리오 조회
 	 * @param user_id
 	 * @return
 	 */
 	public MyPortfolioSearch searchMyPortfolio(String user_id) {
 		MyPortfolioSearch mp_search = null;
 		
-		// DAO 접근
 		mp_search = p_dao.selectMyPortfolio(user_id);
 		
 		return mp_search;
 	} // searchMyPortfolio
 	
 	/**
-	 * 포트폴리오 추가
-	 * @param mp_vo
-	 * @return
-	 */
-	public int addMyPortfolio(MyPortfolioVO mp_vo) {
-		int result = 0;
-		
-		// DAO 접근
-		
-		
-		return result;
-	} // addMyPortfolio
-	
-	/**
-	 * 포트폴리오 수정
+	 * 내 포트폴리오 등록
 	 * @param mp_vo
 	 * @return
 	 * @throws IOException 
 	 */
-	public int modifyMyPortfolio(HttpServletRequest request) throws IOException {
-		int result = 0;
+	public boolean addMyPortfolio(HttpServletRequest request) throws IOException {
+		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest(
 				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
 		
 		MyPortfolioVO mp_vo = new MyPortfolioVO(
-				mr.getParameter("user_id"), mr.getFilesystemName("thumbnail_img"), 
+				(String) request.getAttribute("user_id"), mr.getFilesystemName("thumbnail_img"), 
 				mr.getParameter("title"), mr.getParameter("public_st"));
 		
-		result = p_dao.updateMyPortfolio(mp_vo);
+		flag = (p_dao.insertMyPortfolio(mp_vo) == 1);
 		
-		return result;
+		return flag;
+	} // addMyPortfolio
+	
+	/**
+	 * 내 포트폴리오 수정
+	 * @param mp_vo
+	 * @return
+	 * @throws IOException 
+	 */
+	public boolean modifyMyPortfolio(HttpServletRequest request) throws IOException {
+		boolean flag = false;
+		
+		MultipartRequest mr = new MultipartRequest(
+				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
+		
+		MyPortfolioVO mp_vo = new MyPortfolioVO(
+				(String) request.getAttribute("user_id"), mr.getFilesystemName("thumbnail_img"), 
+				mr.getParameter("title"), mr.getParameter("public_st"));
+		
+		flag = (p_dao.updateMyPortfolio(mp_vo) == 1);
+		
+		return flag;
 	} // modifyMyPortfolio
 	
 	/**
-	 * 포트폴리오 삭제
+	 * 내 포트폴리오 삭제
 	 * @param user_id
 	 * @return
 	 */
-	public int removeMyPortfolio(String user_id) {
-		int result = 0;
+	public boolean removeMyPortfolio(String user_id) {
+		boolean flag = false;
 		
-		// DAO 접근
+		flag = (p_dao.deleteMyPortfolio(user_id) == 1);
 		
-		return result;
+		return flag;
 	} // removeMyPortfolio
 	
 } // class

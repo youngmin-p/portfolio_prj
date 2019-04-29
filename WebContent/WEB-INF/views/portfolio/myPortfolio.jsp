@@ -19,22 +19,36 @@
 	$(function() {
 		$("#permit_st").val("${ mp_search.permit_st }");
 		
+		$("#thumbnail").click(function() {
+			$("#thumbnail_img").click();
+		}); // clcick
+		
+		$("#thumbnail_img").change(function() {
+			fileUpload(this);
+		}); // change
+		
 		$("#btnAdd").click(function() {
-			$("[name='mpFrm']").prop("action", "./myPortfolioAdd.do");
-			
-			$("[name='mpFrm']").submit();
+			if (confirm("포트폴리오를 등록하시겠습니까?")) {
+				$("#mpFrm").attr("action", "./myPortfolioAdd.do");
+				
+				$("#mpFrm").submit();
+			} // end if
 		}); // click
 		
 		$("#btnModify").click(function() {
-			$("#mpFrm").attr("action", "./myPortfolioModify.do");
-			
-			$("#mpFrm").submit();
+			if (confirm("포트폴리오를 수정하시겠습니까?")) {
+				$("#mpFrm").attr("action", "./myPortfolioModify.do");
+				
+				$("#mpFrm").submit();				
+			} // end if
 		}); // click
 		
 		$("#btnRemove").click(function() {
-			confirm("정말 삭제하실 거에요?");
-			
-			
+			if (confirm("포트폴리오를 정말 삭제하시겠습니까?\n삭제된 데이터는 복구되지 않습니다.")) {
+				$("#mpFrm").attr("action", "./myPortfolioRemove.do");
+				
+				$("#mpFrm").submit();
+			} // end if
 		}); // click
 	}); // ready
 	
@@ -43,6 +57,48 @@
 			alert("${ requestScope.msg }");
 		} // end if
 	}); // load
+	
+	function fileUpload(evt) {
+		var thumbnail_img = $("#thumbnail_img").val();
+		
+		if (thumbnail_img == "") {
+			alert("이미지를 선택해주세요.");
+			
+			return;
+		} // end if
+		
+		// 사용 가능한 이미지 확장자 검증 (.png, .jpg)
+		var isPossibleNames = ["png", "jpg"];
+		var isPossible = false;
+		
+		var fileName = thumbnail_img.substring(thumbnail_img.lastIndexOf(".") + 1);
+		
+		for (var i = 0; i < isPossibleNames.length; i++) {
+			if (fileName == isPossibleNames[i]) {
+				isPossible = true;
+			} // end if
+		} // end for
+		
+		if (isPossible) {
+			// 사용 가능한 형식일 때
+			showFileImg(evt);
+		} else {
+			alert("사용 가능한 이미지 형식이 아닙니다. 다시 시도해주세요.");
+		} // end else
+	} // fileUpload
+	
+	function showFileImg(img) {
+		// 이미지 프리뷰
+	    if (img.files && img.files[0]) {
+	    	var reader = new FileReader();
+	    	
+	        reader.onload = function(evt) {
+	        	$("#showImg").attr("src", evt.target.result);
+			} // onload
+	        
+	        reader.readAsDataURL(img.files[0]);
+	    } // end if
+	} // showFileImg
 </script>
 </head>
 <body>
@@ -75,8 +131,8 @@
 							<input type="text" name="permit_st" id="permit_st" class="form-control text-center" readonly="readonly" style="margin-bottom: 10px; width: 150px; height: 38px; font-weigth: bold;"/>
 							<label for="public_st">공개 여부 설정</label>
 							<select name="public_st" id="public_st" class="custom-select" style="text-align-last: center;">
-								<option value="public"${ mp_search.public_st eq 'Y' ? "selected='selected'" : "''" }>공개</option>
-								<option value="private"${ mp_search.public_st eq 'N' ? "selected='selected'" : "''" }>비공개</option>
+								<option value="Y"${ mp_search.public_st eq 'Y' ? "selected='selected'" : "''" }>공개</option>
+								<option value="N"${ mp_search.public_st eq 'N' ? "selected='selected'" : "''" }>비공개</option>
 							</select>
 						</span>
 						<div style="clear: both;"></div>
@@ -84,8 +140,15 @@
 					<div class="form-group row" style="padding-left: 9px;">
 						<div class="col-3"></div>
 						<div class="col-6" style="text-align: center; margin-top: -60px;">
-							<img src="http://localhost:8080/propofol_prj/common/images/no_image.png" class="img-thumbnail" style="width: 300px; height: 300px;"/>
-							<!-- ajax 이용해서 전송 : button 클릭으로 $("#thumbnail").click() -->
+						<!-- 임시 isExist. 현재 항상 true 상태  -->
+						<c:choose>
+						<c:when test="${ requestScope.isExist }">
+							<img src="http://localhost:8080/propofol_prj/upload/${ mp_search.thumbnail_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
+						</c:when>
+						<c:otherwise>
+							<img src="http://localhost:8080/propofol_prj/common/images/no_image.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
+						</c:otherwise>
+						</c:choose>
 							<div style="margin-top: 10px;">
 								<input type="file" name="thumbnail_img" id="thumbnail_img" style="display:none;"/>
 								<label for="thumbnail" style="margin-right: 10px;">섬네일 이미지 등록</label>
@@ -113,11 +176,11 @@
 				<input type="button" value="포트폴리오 삭제" name="btnRemove" id="btnRemove" class="btn btn-danger" style="margin-right: 15px;"/>
 				<!-- 포트폴리오 테이블 조회 시 아이디 검색 여부에 따라 다른 버튼을 보여준다. -->
 				<c:choose>
-				<c:when test="${ empty requestScope.isExist }">
-				<input type="button" value="포트폴리오 등록" name="btnAdd" id="btnAdd" class="btn btn-primary"/>
+				<c:when test="${ requestScope.isExist }">
+				<input type="button" value="포트폴리오 수정" name="btnModify" id="btnModify" class="btn btn-primary"/>
 				</c:when>
 				<c:otherwise>
-				<input type="button" value="포트폴리오 수정" name="btnModify" id="btnModify" class="btn btn-primary"/>
+				<input type="button" value="포트폴리오 등록" name="btnAdd" id="btnAdd" class="btn btn-primary"/>
 				</c:otherwise>
 				</c:choose>
 			</div>
