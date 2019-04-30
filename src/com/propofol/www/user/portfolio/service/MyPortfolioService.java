@@ -80,7 +80,7 @@ public class MyPortfolioService {
 		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest(
-				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
+				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
 		
 		MyPortfolioVO mp_vo = new MyPortfolioVO(
 				(String) request.getAttribute("user_id"), mr.getFilesystemName("thumbnail_img"), 
@@ -101,7 +101,7 @@ public class MyPortfolioService {
 		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest(
-				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024*1024*10, "UTF-8", new DefaultFileRenamePolicy());
+				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
 		
 		MyPortfolioVO mp_vo = new MyPortfolioVO(
 				(String) request.getAttribute("user_id"), mr.getFilesystemName("thumbnail_img"), 

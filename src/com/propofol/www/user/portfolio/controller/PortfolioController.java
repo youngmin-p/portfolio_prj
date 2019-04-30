@@ -7,10 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.propofol.www.user.portfolio.domain.AboutMeSearch;
+import com.propofol.www.user.portfolio.domain.ExperienceSearch;
 import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
+import com.propofol.www.user.portfolio.service.AboutMeService;
+import com.propofol.www.user.portfolio.service.ExperienceService;
 import com.propofol.www.user.portfolio.service.MyPortfolioService;
+import com.propofol.www.user.portfolio.service.TechStacksService;
+import com.propofol.www.user.portfolio.service.TellMeService;
+import com.propofol.www.user.portfolio.vo.ExperienceSearchVO;
 import com.propofol.www.user.portfolio.vo.ExperienceVO;
-import com.propofol.www.user.portfolio.vo.MyPortfolioVO;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -25,6 +31,18 @@ public class PortfolioController {
 	
 	@Autowired(required=false)
 	private MyPortfolioService mp_service;
+	
+	@Autowired(required=false)
+	private AboutMeService am_service;
+	
+	@Autowired(required=false)
+	private TechStacksService ts_service;
+	
+	@Autowired(required=false)
+	private ExperienceService exp_service;
+	
+	@Autowired(required=false)
+	private TellMeService tm_service;
 	
 	/**
 	 * 내 포트폴리오 관리 화면 최초 진입점
@@ -229,10 +247,10 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
+		// temp data
+		user_id = "young";
+		
 		if (!"".equals(user_id) && user_id != null) {
-			// 포트폴리오 삭제
-			System.out.println("---- if 삭제문 내로 들어왔음.");
-			
 			flag = mp_service.removeMyPortfolio(user_id);
 			
 			if (flag) {
@@ -245,15 +263,130 @@ public class PortfolioController {
 		return moveURL;
 	} // removeMyPortfolio
 	
-	// -------------------- 포트폴리오 세부 업무 처리 시작 -------------------- //
 	// -------------------- 포트폴리오 자기소개 시작 -------------------- //
 	
+	/**
+	 * 자기소개 조회
+	 * @param session
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/portfolio/aboutMeForm.do", method=GET)
-	public String aboutMeForm(HttpSession session) {
+	public String aboutMeForm(HttpSession session, Model model) {
+		boolean flag = false;
 		
+		String user_id = (String) session.getAttribute("user_id");
+		
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			AboutMeSearch am_search = am_service.searchAboutMe(user_id);
+			
+			System.out.println(am_search);
+			
+			if (am_search != null) {
+				flag = true;
+				
+				model.addAttribute("am_search", am_search);
+				model.addAttribute("isExist", flag);
+			} // end if
+		} // end if
 		
 		return "portfolio/aboutMeForm";
 	} // aboutMeForm
+	
+	@RequestMapping(value="/portfolio/aboutMeAdd.do", method=POST)
+	public String addAboutMe(HttpServletRequest request, HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		
+		user_id = "young";
+		
+		try {
+			if (user_id != null && !"".equals(user_id)) {
+				request.setAttribute("user_id", user_id);
+				
+				flag = am_service.addAboutMe(request);
+				
+				if (flag) {
+					moveURL = "redirect:aboutMeForm.do";
+					
+					redirect.addFlashAttribute("msg", user_id + "님의 자기소개가 성공적으로 등록되었습니다.");
+				} // end if
+			} // end if
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} // end catch
+		
+		return moveURL;
+	} // addAboutMe
+	
+	/**
+	 * 자기소개 적용 (수정)
+	 * @param request
+	 * @param session
+	 * @param redirect
+	 * @return
+	 */
+	@RequestMapping(value="/portfolio/aboutMeModify.do", method=POST)
+	public String modifyAboutMe(HttpServletRequest request, HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		
+		// temp data
+		user_id = "young";
+		
+		try {
+			if (user_id != null && !"".equals(user_id)) {
+				request.setAttribute("user_id", user_id);
+				
+				flag = am_service.modifyAboutMe(request);
+				
+				if (flag) {
+					moveURL = "redirect:aboutMeForm.do";
+					
+					redirect.addFlashAttribute("msg", user_id + "님의 자기소개가 성공적으로 적용되었습니다.");
+				} // end if				
+			} // end if
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} // end catch
+		
+		return moveURL;
+	} // modifyAboutMe
+	
+	/**
+	 * 자기소개 초기화
+	 * @param session
+	 * @param redirect
+	 * @return
+	 */
+	@RequestMapping(value="/portfolio/aboutMeReset.do", method=POST)
+	public String resetAboutMe(HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			flag = am_service.resetAboutMe(user_id);
+			
+			if (flag) {
+				moveURL = "redirect:aboutMeForm.do";
+				
+				redirect.addFlashAttribute("msg", user_id + "님의 자기소개가 성공적으로 초기화되었습니다.");
+			} // end if
+		} // end if
+		
+		return moveURL;
+	} // resetAboutMe
 	
 	// -------------------- 포트폴리오 기술 스택 시작 -------------------- //
 	
@@ -268,44 +401,121 @@ public class PortfolioController {
 	
 	@RequestMapping(value="/portfolio/experienceForm.do", method=GET)
 	public String experienceForm(@RequestParam(name="exp_cd", defaultValue="Edu", required=false) String exp_cd, HttpSession session, Model model) {
-		// session에 저장된 아이디를 받아서 관련 경험에 등록된 정보를 조회
+		boolean flag = false;
+		
 		String user_id = (String) session.getAttribute("user_id");
 		
-		System.out.println("----- exp_cd val=" + exp_cd);
+		user_id = "young";
 		
-		// 관련 경험 서비스 조회
-		if ("Prj".equals(exp_cd)) {
-			// 프로젝트 관련 경험 선택 시
+		if (user_id != null && !"".equals(user_id)) {
+			/*
+			ExperienceSearchVO es_vo = 
+					new ExperienceSearchVO(user_id, exp_cd);
+			*/
+			
+			ExperienceSearchVO es_vo = new ExperienceSearchVO();
+			
+			es_vo.setUser_id(user_id);
+			es_vo.setExp_cd(exp_cd);
+			
+			// "Prj"는 아직 없기 때문에 못 불러오는 중"
+			System.out.println("---- Experience user_id = " + user_id + " / exp_cd = " + exp_cd);
+			
+			ExperienceSearch exp_search = exp_service.searchExperience(es_vo);
+			
+			if (exp_search != null) {
+				flag = true;
+				
+				System.out.println("exp_search의 exp_cd = " + exp_search.getExp_cd());
+				
+				model.addAttribute("exp_search", exp_search);
+				model.addAttribute("isExist", flag);
+			} // end if
 		} // end if
-		
-		if ("Edu".equals(exp_cd)) {
-			// 교육사항 관련 경험 선택 시
-		} // end if
-		
-		model.addAttribute("exp_cd", exp_cd);
 		
 		return "portfolio/experienceForm";
 	} // experienceForm
 	
-	@RequestMapping(value="/portfolio/experienceAdd.do", method=GET)
-	public String experienceAdd(ExperienceVO exp_vo, HttpSession session) {
+	@RequestMapping(value="/portfolio/experienceAdd.do", method=POST)
+	public String addExperience(HttpServletRequest request, HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
 		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		String exp_cd = request.getParameter("exp_cd");
+		String word = "";
 		
-		// 관련 경험 추가
+		// temp data
+		user_id = "young";
 		
+		try {
+			if (user_id != null && !"".equals(user_id)) {
+				request.setAttribute("user_id", user_id);
+				
+				flag = exp_service.addExperience(request);
+				
+				if (flag) {
+					moveURL = "redirect:experienceForm.do";
+					
+					if (exp_cd == "Edu") {
+						word = "교육사항이";
+					} // end if
+					
+					if (exp_cd == "Prj") {
+						word = "프로젝트가";
+					} // end if
+					
+					redirect.addFlashAttribute("msg", user_id + "님의  " + word + " 성공적으로 등록되었습니다.");
+				} // end if
+			} // end if
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} // end catch
 		
-		return "portfolio/experienceForm";
-	} // experienceAdd
+		return moveURL;
+	} // addExperience
 	
 	@RequestMapping(value="/portfolio/experienceModify.do", method=GET)
-	public String experienceModify(ExperienceVO exp_vo, HttpSession session) {
+	public String modifyExperience(ExperienceVO exp_vo, HttpSession session) {
 		String user_id = (String) session.getAttribute("user_id");
 		
 		// 관련 경험 수정
 		
 		
 		return "portfolio/experienceForm";
-	} // experienceModify
+	} // modifyExperience
+	
+	@RequestMapping(value="/portfolio/experienceReset.do", method=POST)
+	public String resetExperience(@RequestParam(name="exp_cd", required=false) String exp_cd, HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		String word = "";
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			flag = exp_service.resetExperience(user_id);
+			
+			if (flag) {
+				moveURL = "redirect:experienceForm.do";
+				
+				if (exp_cd == "Edu") {
+					word = "교육사항이";
+				} // end if
+				
+				if (exp_cd == "Prj") {
+					word = "프로젝트가";
+				} // end if
+				
+				redirect.addFlashAttribute("msg", user_id + "님의 " + word + " 성공적으로 초기화되었습니다.");
+			} // end if
+		} // end if
+		
+		return moveURL;
+	} // resetExperience
 	
 	// -------------------- 포트폴리오 연락처 시작 -------------------- //
 	

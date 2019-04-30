@@ -17,9 +17,14 @@
 
 <script type="text/javascript">
 	$(function() {
-		$("#exp_cd").val("${ requestScope.exp_cd }").prop("selected", true);
+		$("#exp_cd").val("${ exp_search.exp_cd }").prop("selected", true);
 		
 		$("#exp_cd").change(function() {
+			var moveURL = "";
+			
+			// select된 값을 변수에 담아서, change가 발생했을 때 값을 비교
+			// 변경된 값이 있다면 confirm을 띄운다.
+			
 			location.href = "./experienceForm.do?exp_cd=" + $("#exp_cd").val();
 		}); // change
 	}); // ready
@@ -59,15 +64,20 @@
 					<div style="clear: both;"></div>
 				</div>
 				<!-- import -->
-				<%-- <c:import url="/WEB-INF/views/portfolio/experiencePrjSlice.jsp"/> --%>
-				<%-- <c:import url="/WEB-INF/views/portfolio/experiencePrjSlice.jsp"/> --%>
-				<%-- <c:import url="./experience${ requestScope.exp_cd }Slice.jsp"/> --%>
-				<c:import url="./experience${ exp_cd }Slice.jsp"/>
+				<!-- 190430 17:45 여기부터 작업 시작 : 시작 시 에러 발생 exp_cd 값이  -->
+				<c:import url="./experience${ exp_search.exp_cd }Slice.jsp"/>
 			</div>
 			<!-- section-footer -->
 			<div id="section-footer">
 				<input type="button" value="초기화" name="btnReset" id="btnReset" class="btn btn-dark" style="margin-right: 15px;"/>
-				<input type="button" value="적용" name="btnRevise" id="btnRevise" class="btn btn-primary"/>
+				<c:choose>
+				<c:when test="${ requestScope.isExist }">
+				<input type="button" value="관련 경험 수정" name="btnModify" id="btnModify" class="btn btn-primary"/>
+				</c:when>
+				<c:otherwise>
+				<input type="button" value="관련 경험 등록" name="btnAdd" id="btnAdd" class="btn btn-primary"/>
+				</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 	</section>
