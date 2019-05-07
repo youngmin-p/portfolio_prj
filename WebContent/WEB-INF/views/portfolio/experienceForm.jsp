@@ -18,16 +18,20 @@
 <script type="text/javascript">
 	$(function() {
 		$("#exp_cd").val("${ exp_search.exp_cd }").prop("selected", true);
-		
+	}); // ready
+	
+	$(window).load(function() {
 		$("#exp_cd").change(function() {
 			var moveURL = "";
+			
+			alert($("#exp_cd").val());
 			
 			// select된 값을 변수에 담아서, change가 발생했을 때 값을 비교
 			// 변경된 값이 있다면 confirm을 띄운다.
 			
 			location.href = "./experienceForm.do?exp_cd=" + $("#exp_cd").val();
 		}); // change
-	}); // ready
+	}); // load
 </script>
 </head>
 <body>
@@ -64,6 +68,7 @@
 					<div style="clear: both;"></div>
 				</div>
 				<!-- import -->
+				<!-- 값이 없어도 "Prj"로 이동해야 하는데, 현재 로직에서는 "Prj"로 가는 방법이 없네. 수정이 필요함. -->
 				<!-- 190430 17:45 여기부터 작업 시작 : 시작 시 에러 발생 exp_cd 값이  -->
 				<c:import url="./experience${ exp_search.exp_cd }Slice.jsp"/>
 			</div>

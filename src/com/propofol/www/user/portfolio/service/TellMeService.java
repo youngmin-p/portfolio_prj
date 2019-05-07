@@ -1,10 +1,16 @@
 package com.propofol.www.user.portfolio.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.propofol.www.user.dao.PortfolioDAO;
 import com.propofol.www.user.portfolio.domain.TellMeSearch;
 import com.propofol.www.user.portfolio.vo.TellMeVO;
 
+@Component
 public class TellMeService {
+	
+	@Autowired(required=false)
 	private PortfolioDAO p_dao;
 	
 	public TellMeService() {
@@ -22,8 +28,7 @@ public class TellMeService {
 	public TellMeSearch searchTellMe(String user_id) {
 		TellMeSearch tm_search = null;
 		
-		// DAO 접근
-		
+		tm_search = p_dao.selectTellMe(user_id);
 		
 		return tm_search;
 	} // searchTellMe
@@ -33,13 +38,12 @@ public class TellMeService {
 	 * @param am_vo
 	 * @return
 	 */
-	public int addTellMe(TellMeVO am_vo) {
-		int result = 0;
+	public boolean addTellMe(TellMeVO tm_vo) {
+		boolean flag = false;
 		
-		// DAO 접근
+		flag = (p_dao.insertTellMe(tm_vo) == 1);
 		
-		
-		return result;
+		return flag;
 	} // addTellMe
 	
 	/**
@@ -47,13 +51,12 @@ public class TellMeService {
 	 * @param am_vo
 	 * @return
 	 */
-	public int modifyTellMe(TellMeVO am_vo) {
-		int result = 0;
+	public boolean modifyTellMe(TellMeVO tm_vo) {
+		boolean flag = false;
 		
-		// DAO 접근
+		flag = (p_dao.updateTellMe(tm_vo) == 1);
 		
-		
-		return result;
+		return flag;
 	} // modifyTellMe
 	
 	/**
@@ -61,13 +64,12 @@ public class TellMeService {
 	 * @param user_id
 	 * @return
 	 */
-	public int resetTellMe(String user_id) {
-		int result = 0;
+	public boolean resetTellMe(String user_id) {
+		boolean flag = false;
 		
-		// DAO 접근
+		flag = (p_dao.resetTellMe(user_id) == 1);
 		
-		
-		return result;
+		return flag;
 	} // resetTellMe
 	
 	// -------------------- 연락처 종료 -------------------- //

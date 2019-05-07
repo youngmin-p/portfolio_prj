@@ -80,7 +80,27 @@
 	</update>
 	 -->
 	<delete id="resetAboutMe" parameterType="String">
-		DELETE FROM ABOUT_ME WHERE USER_ID = #{ USER_ID }
+		DELETE FROM ABOUT_ME WHERE USER_ID = #{ user_id }
+	</delete>
+	
+	<!-- 기술 스택 조회 -->
+	<select id="selectTechStacks" parameterType="String" resultType="String">
+		SELECT SELECTED_TECHNIQUE
+		FROM TECHNICAL_STACKS
+		WHERE USER_ID = #{ user_id }
+	</select>
+	
+	<!-- 기술 스택 등록 -->
+	<insert id="insertTechStacks" parameterType="com.propofol.www.user.portfolio.vo.TechStacksVO">
+	<foreach collection="selected_technique" item="selected_technique" open="INSERT ALL" separator=" " close="SELECT * FROM DUAL">
+		INTO TECHNICAL_STACKS (USER_ID, SELECTED_TECHNIQUE)
+		VALUES (#{ user_id }, #{ selected_technique })
+	</foreach>
+	</insert>
+	
+	<!-- 기술 스택 초기화 -->
+	<delete id="resetTechStacks" parameterType="String">
+		DELETE FROM TECHNICAL_STACKS WHERE USER_ID = #{ user_id }
 	</delete>
 	
 	<!-- 관련 경험 조회 -->
@@ -107,6 +127,31 @@
 	
 	<!-- 관련 경험 초기화 (삭제) -->
 	<delete id="resetExperience" parameterType="String">
-		DELETE FROM EXPERIENCE WHERE USER_ID = #{ USER_ID }
+		DELETE FROM EXPERIENCE WHERE USER_ID = #{ user_id }
+	</delete>
+	
+	<!-- 연락처 조회 -->
+	<select id="selectTellMe" parameterType="String" resultType="com.propofol.www.user.portfolio.domain.TellMeSearch">
+		SELECT PHONE_NO, EMAIL, BLOG
+		FROM TELL_ME
+		WHERE USER_ID = #{ user_id }
+	</select>
+	
+	<!-- 연락처 등록 -->
+	<insert id="insertTellMe" parameterType="com.propofol.www.user.portfolio.vo.TellMeVO">
+		INSERT INTO TELL_ME (USER_ID, PHONE_NO, EMAIL, BLOG) 
+		VALUES (#{ user_id }, #{ phone_no }, #{ email }, #{ blog })
+	</insert>
+	
+	<!-- 연락처 수정 -->
+	<update id="updateTellMe" parameterType="com.propofol.www.user.portfolio.vo.TellMeVO">
+		UPDATE TELL_ME
+		SET PHONE_NO = #{ phone_no }, EMAIL = #{ email }, BLOG = #{ blog }
+		WHERE USER_ID = #{ user_id }
+	</update>
+	
+	<!-- 연락처 초기화 (삭제) -->
+	<delete id="resetTellMe" parameterType="String">
+		DELETE FROM TELL_ME WHERE USER_ID = #{ user_id }
 	</delete>
 </mapper>

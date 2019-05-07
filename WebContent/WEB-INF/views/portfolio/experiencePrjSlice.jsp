@@ -8,14 +8,14 @@
 					<div class="form-group row" style="padding-left: 9px; padding-top: 54px;">
 						<div class="col-6 ml-auto">
 							<label for="title">제목</label>
-							<input type="text" name="title" id="title" class="form-control" placeholder="제목을 입력해주세요." maxlength="20"/>
+							<input type="text" value="${ exp_search.title }" name="title" id="title" class="form-control" placeholder="제목을 입력해주세요." maxlength="20"/>
 							<!-- 제목에 대한 에러 메시지 출력 -->
 							<!-- <div style="color: #FF0000; height: 38px;"> -->
 							<div style="margin-top: 8px; height: 30px; color: #FF0000;">
 								<div id="warnTitle" style="visibility: hidden;"></div>
 							</div>
 							<label for="contents">내용</label>
-							<textarea class="form-control" name="contents" id="contents" rows="6" placeholder="내용을 입력해주세요."></textarea>
+							<textarea class="form-control" name="contents" id="contents" rows="6" placeholder="내용을 입력해주세요.">${ exp_search.contents }</textarea>
 							<!-- 내용에 대한 에러 메시지 출력 (글자수 제한 ?) -->
 							<div style="margin-top: 8px; height: 30px; color: #FF0000;">
 								<div id="warnContents" style="visibility: hidden;"></div>
