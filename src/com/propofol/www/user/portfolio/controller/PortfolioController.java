@@ -10,6 +10,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.propofol.www.user.portfolio.domain.AboutMeSearch;
 import com.propofol.www.user.portfolio.domain.ExperienceSearch;
 import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
+import com.propofol.www.user.portfolio.domain.TechStacksSearch;
+import com.propofol.www.user.portfolio.domain.TellMeSearch;
 import com.propofol.www.user.portfolio.service.AboutMeService;
 import com.propofol.www.user.portfolio.service.ExperienceService;
 import com.propofol.www.user.portfolio.service.MyPortfolioService;
@@ -17,6 +19,8 @@ import com.propofol.www.user.portfolio.service.TechStacksService;
 import com.propofol.www.user.portfolio.service.TellMeService;
 import com.propofol.www.user.portfolio.vo.ExperienceSearchVO;
 import com.propofol.www.user.portfolio.vo.ExperienceVO;
+import com.propofol.www.user.portfolio.vo.TechStacksVO;
+import com.propofol.www.user.portfolio.vo.TellMeVO;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -391,11 +395,106 @@ public class PortfolioController {
 	// -------------------- 포트폴리오 기술 스택 시작 -------------------- //
 	
 	@RequestMapping(value="/portfolio/techStacksForm.do", method=GET)
-	public String techStacksForm(HttpSession session) {
+	public String techStacksForm(HttpSession session, Model model) {
+		boolean flag = false;
 		
+		String user_id = (String) session.getAttribute("user_id");
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			TechStacksSearch ts_search = ts_service.searchTechStacks(user_id);
+			
+			if (ts_search != null) {
+				flag = true;
+				
+				model.addAttribute("ts_search", ts_search);
+				model.addAttribute("isExist", flag);
+			} // end if
+		} // end if
 		
 		return "portfolio/techStacksForm";
 	} // techStacksForm
+	
+	@RequestMapping(value="/portfolio/techStacksAdd.do", method=GET)
+	public String addTechStacks(@RequestParam(name="selected_technique", required=false) String[] selected_technique, HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			TechStacksVO ts_vo = new TechStacksVO();
+			
+			ts_vo.setUser_id(user_id);
+			ts_vo.setSelected_technique(selected_technique);
+			
+			flag = ts_service.addTechStacks(ts_vo);
+			
+			if (flag) {
+				moveURL = "redirect:techStacksForm.do";
+				
+				redirect.addFlashAttribute("msg", user_id + "님의 기술 스택이 성공적으로 등록되었습니다.");
+			} // end if
+		} // end if
+		
+		return moveURL;
+	} // addTechStacks
+	
+	@RequestMapping(value="/portfolio/techStacksModify.do", method=GET)
+	public String modifyTechStacks(@RequestParam(name="selected_technique", required=false) String[] selected_technique, HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			TechStacksVO ts_vo = new TechStacksVO();
+			
+			ts_vo.setUser_id(user_id);
+			ts_vo.setSelected_technique(selected_technique);
+			
+			flag = ts_service.modifyTechStacks(ts_vo);
+			
+			if (flag) {
+				moveURL = "redirect:techStacksForm.do";
+				
+				redirect.addFlashAttribute("msg", user_id + "님의 기술 스택이 성공적으로 수정되었습니다.");
+			} // end if
+		} // end if
+		
+		return moveURL;
+	} // modifyTechStacks
+	
+	@RequestMapping(value="/portfolio/techStacksReset.do", method=GET)
+	public String resetTechStacks(HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			flag = ts_service.resetTechStacks(user_id);
+			
+			if (flag) {
+				moveURL = "redirect:techStacksForm.do";
+				
+				redirect.addFlashAttribute("msg", user_id + "님의 기술 스택이 성공적으로 초기화되었습니다.");
+			} // end if
+		} // end if
+		
+		return moveURL;
+	} // resetTechStacks
 	
 	// -------------------- 포트폴리오 관련 경험 시작 -------------------- //
 	
@@ -475,7 +574,7 @@ public class PortfolioController {
 		return moveURL;
 	} // addExperience
 	
-	@RequestMapping(value="/portfolio/experienceModify.do", method=GET)
+	@RequestMapping(value="/portfolio/experienceModify.do", method=POST)
 	public String modifyExperience(ExperienceVO exp_vo, HttpSession session) {
 		String user_id = (String) session.getAttribute("user_id");
 		
@@ -520,11 +619,100 @@ public class PortfolioController {
 	// -------------------- 포트폴리오 연락처 시작 -------------------- //
 	
 	@RequestMapping(value="/portfolio/tellMeForm.do", method=GET)
-	public String tellMeForm(HttpSession session) {
+	public String tellMeForm(HttpSession session, Model model) {
+		boolean flag = false;
 		
+		String user_id = (String) session.getAttribute("user_id");
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			TellMeSearch tm_search = tm_service.searchTellMe(user_id);
+			
+			if (tm_search != null) {
+				flag = true;
+				
+				model.addAttribute("tm_search", tm_search);
+				model.addAttribute("isExist", flag);
+			} // end if
+		} // end if
 		
 		return "portfolio/tellMeForm";
 	} // tellMeForm
+	
+	@RequestMapping(value="/portfolio/tellMeAdd.do", method=GET)
+	public String addTellMe(TellMeVO tm_vo, HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			tm_vo.setUser_id(user_id);
+			
+			flag = tm_service.addTellMe(tm_vo);
+			
+			if (flag) {
+				moveURL = "redirect:tellMeForm.do";
+				
+				redirect.addFlashAttribute("msg", user_id + "님의 연락처가 성공적으로 등록되었습니다.");
+			} // end if
+		} // end if
+		
+		return moveURL;
+	} // addTellMe
+	
+	@RequestMapping(value="/portfolio/tellMeModify.do", method=GET)
+	public String modifyTellMe(TellMeVO tm_vo, HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			tm_vo.setUser_id(user_id);
+			
+			flag = tm_service.modifyTellMe(tm_vo);
+			
+			if (flag) {
+				moveURL = "redirect:tellMeForm.do";
+				
+				redirect.addFlashAttribute("msg", user_id + "님의 연락처가 성공적으로 수정되었습니다.");
+			} // end if
+		} // end if
+		
+		return moveURL;
+	} // modifyTellMe
+	
+	@RequestMapping(value="/portfolio/tellMeReset.do", method=GET)
+	public String resetTellMe(HttpSession session, RedirectAttributes redirect) {
+		boolean flag = false;
+		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			flag = tm_service.resetTellMe(user_id);
+			
+			if (flag) {
+				moveURL = "redirect:tellMeForm.do";
+				
+				redirect.addFlashAttribute("msg", user_id + "님의 연락처가 성공적으로 초기화되었습니다.");
+			} // end if
+		} // end if
+		
+		return moveURL;
+	} // resetTellMe
 	
 	// -------------------- 포트폴리오 게시판 시작 -------------------- //
 	

@@ -1,10 +1,16 @@
 package com.propofol.www.user.portfolio.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.propofol.www.user.dao.PortfolioDAO;
 import com.propofol.www.user.portfolio.domain.TechStacksSearch;
 import com.propofol.www.user.portfolio.vo.TechStacksVO;
 
+@Component
 public class TechStacksService {
+	
+	@Autowired(required=false)
 	private PortfolioDAO p_dao;
 	
 	public TechStacksService() {
@@ -22,24 +28,22 @@ public class TechStacksService {
 	public TechStacksSearch searchTechStacks(String user_id) {
 		TechStacksSearch ts_search = null;
 		
-		// DAO 접근
-		
+		ts_search = p_dao.selectTechStacks(user_id);
 		
 		return ts_search;
 	} // searchTechStacks
 	
 	/**
-	 * 기술 스택 추가
+	 * 기술 스택 등록
 	 * @param am_vo
 	 * @return
 	 */
-	public int addTechStacks(TechStacksVO am_vo) {
-		int result = 0;
+	public boolean addTechStacks(TechStacksVO ts_vo) {
+		boolean flag = false;
 		
-		// DAO 접근
+		flag = (p_dao.insertTechStacks(ts_vo) == 1);
 		
-		
-		return result;
+		return flag;
 	} // addTechStacks
 	
 	/**
@@ -47,13 +51,12 @@ public class TechStacksService {
 	 * @param am_vo
 	 * @return
 	 */
-	public int modifyTechStacks(TechStacksVO am_vo) {
-		int result = 0;
+	public boolean modifyTechStacks(TechStacksVO ts_vo) {
+		boolean flag = false;
 		
-		// DAO 접근
+		flag = (p_dao.updateTechStacks(ts_vo) == 1);
 		
-		
-		return result;
+		return flag;
 	} // modifyTechStacks
 	
 	/**
@@ -61,13 +64,12 @@ public class TechStacksService {
 	 * @param user_id
 	 * @return
 	 */
-	public int resetTechStacks(String user_id) {
-		int result = 0;
+	public boolean resetTechStacks(String user_id) {
+		boolean flag = false;
 		
-		// DAO 접근
+		flag = (p_dao.resetTechStacks(user_id) == 1);
 		
-		
-		return result;
+		return flag;
 	} // resetTechStacks
 	
 	// -------------------- 기술 스택 종료 -------------------- //

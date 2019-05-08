@@ -2,7 +2,7 @@ package com.propofol.www.user.portfolio.domain;
 
 public class TechStacksSearch {
 	private String[] selected_technique;
-	
+
 	public String[] getSelected_technique() {
 		return selected_technique;
 	}

@@ -17,8 +17,40 @@
 
 <script type="text/javascript">
 	$(function() {
+		$("#btnAdd").click(function() {
+			if (confirm("기술 스택을 등록하시겠습니까?")) {
+				$("#tsFrm").attr("action", "./aboutMeAdd.do");
+				
+				$("#tsFrm").submit();
+			} // end if
+		}); // click
 		
+		$("#btnModify").click(function() {
+			if (confirm("포트폴리오를 수정하시겠습니까?")) {
+				$("#tsFrm").attr("action", "./aboutMeModify.do");
+				
+				$("#tsFrm").submit();				
+			} // end if
+		}); // click
+		
+		$("#btnReset").click(function() {
+			if (confirm("포트폴리오를 정말 초기화하시겠습니까?\n초기화된 데이터는 복구되지 않습니다.")) {
+				$("#tsFrm").attr("action", "./aboutMeReset.do");
+				
+				$("#tsFrm").submit();
+			} // end if
+		}); // click
 	}); // ready
+	
+	$(window).load(function() {
+		$("[name='selected_technique']").click(function() {
+			$("input:checkbox[name='selected_technique']:checked").each(function() {
+				var techniques = $(this).val();
+				
+				alert(techniques);
+			}); // each
+		}); // click
+	}); // load
 </script>
 </head>
 <body>
@@ -56,15 +88,15 @@
 							<div style="margin-bottom: 60px;">
 								<table style="margin: 1px auto;">
 									<tr>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="Java" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="Java"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="HTML" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="HTML"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="CSS" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="CSS"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="JavaScript" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="JavaScript"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="jQuery" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="jQuery"/></td>
 									</tr>
 								</table>
@@ -72,15 +104,15 @@
 							<div style="margin-bottom: 60px;">
 								<table style="margin: 1px auto;">
 									<tr>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="Ajax" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="Ajax"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="Servlet" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="Servlet"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="JSP" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="JSP"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="Oracle" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="Oracle"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="MySQL" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="MySQL"/></td>
 									</tr>
 								</table>
@@ -88,15 +120,15 @@
 							<div style="margin-bottom: 60px;">
 								<table style="margin: 1px auto;">
 									<tr>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="Spring" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="Spring"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="MyBatis" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="MyBatis"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="Bootstrap" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="Bootstrap"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="Vue" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="Vue"/></td>
-										<td style="width: 40px;"><input type="checkbox" name="techStacks"/></td>
+										<td style="width: 40px;"><input type="checkbox" value="React" name="selected_technique"/></td>
 										<td style="width: 100px;"><c:out value="React"/></td>
 									</tr>
 								</table>
@@ -108,7 +140,14 @@
 			<!-- section-footer -->
 			<div id="section-footer">
 				<input type="button" value="초기화" name="btnReset" id="btnReset" class="btn btn-dark" style="margin-right: 15px;"/>
-				<input type="button" value="적용" name="btnRevise" id="btnRevise" class="btn btn-primary"/>
+				<c:choose>
+				<c:when test="${ requestScope.isExist }">
+				<input type="button" value="기술 스택 수정" name="btnModify" id="btnModify" class="btn btn-primary"/>
+				</c:when>
+				<c:otherwise>
+				<input type="button" value="기술 스택 등록" name="btnAdd" id="btnAdd" class="btn btn-primary"/>
+				</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 	</section>
