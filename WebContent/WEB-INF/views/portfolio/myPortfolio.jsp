@@ -173,10 +173,9 @@
 			</div>
 			<!-- section-footer -->
 			<div id="section-footer">
-				<input type="button" value="포트폴리오 삭제" name="btnRemove" id="btnRemove" class="btn btn-danger" style="margin-right: 15px;"/>
-				<!-- 포트폴리오 테이블 조회 시 아이디 검색 여부에 따라 다른 버튼을 보여준다. -->
 				<c:choose>
 				<c:when test="${ requestScope.isExist }">
+				<input type="button" value="포트폴리오 삭제" name="btnRemove" id="btnRemove" class="btn btn-danger" style="margin-right: 15px;"/>
 				<input type="button" value="포트폴리오 수정" name="btnModify" id="btnModify" class="btn btn-primary"/>
 				</c:when>
 				<c:otherwise>

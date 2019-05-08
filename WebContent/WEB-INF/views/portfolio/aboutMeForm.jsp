@@ -161,9 +161,9 @@
 			</div>
 			<!-- section-footer -->
 			<div id="section-footer">
-				<input type="button" value="초기화" name="btnReset" id="btnReset" class="btn btn-dark" style="margin-right: 15px;"/>
 				<c:choose>
 				<c:when test="${ requestScope.isExist }">
+				<input type="button" value="초기화" name="btnReset" id="btnReset" class="btn btn-dark" style="margin-right: 15px;"/>
 				<input type="button" value="자기소개 수정" name="btnModify" id="btnModify" class="btn btn-primary"/>
 				</c:when>
 				<c:otherwise>

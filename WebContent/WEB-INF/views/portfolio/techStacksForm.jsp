@@ -17,25 +17,28 @@
 
 <script type="text/javascript">
 	$(function() {
+		/* 기술 스택 체크 */
+		chkTechList();
+		
 		$("#btnAdd").click(function() {
 			if (confirm("기술 스택을 등록하시겠습니까?")) {
-				$("#tsFrm").attr("action", "./aboutMeAdd.do");
+				$("#tsFrm").attr("action", "./techStacksAdd.do");
 				
 				$("#tsFrm").submit();
 			} // end if
 		}); // click
 		
 		$("#btnModify").click(function() {
-			if (confirm("포트폴리오를 수정하시겠습니까?")) {
-				$("#tsFrm").attr("action", "./aboutMeModify.do");
+			if (confirm("기술 스택을 수정하시겠습니까?")) {
+				$("#tsFrm").attr("action", "./techStacksModify.do");
 				
 				$("#tsFrm").submit();				
 			} // end if
 		}); // click
 		
 		$("#btnReset").click(function() {
-			if (confirm("포트폴리오를 정말 초기화하시겠습니까?\n초기화된 데이터는 복구되지 않습니다.")) {
-				$("#tsFrm").attr("action", "./aboutMeReset.do");
+			if (confirm("기술 스택을 정말 초기화하시겠습니까?\n초기화된 데이터는 복구되지 않습니다.")) {
+				$("#tsFrm").attr("action", "./techStacksReset.do");
 				
 				$("#tsFrm").submit();
 			} // end if
@@ -43,14 +46,18 @@
 	}); // ready
 	
 	$(window).load(function() {
-		$("[name='selected_technique']").click(function() {
-			$("input:checkbox[name='selected_technique']:checked").each(function() {
-				var techniques = $(this).val();
-				
-				alert(techniques);
-			}); // each
-		}); // click
+		if ("${ requestScope.msg }" != "") {
+			alert("${ requestScope.msg }");
+		} // end if
 	}); // load
+	
+	function chkTechList() {
+		<c:if test="${ not empty ts_search }">
+		<c:forEach var="selected_technique" items="${ ts_search.selected_technique }">
+		$("input:checkbox[value='${ selected_technique }']").prop("checked", "checked");
+		</c:forEach>
+		</c:if>
+	} // chkTechList
 </script>
 </head>
 <body>
@@ -78,7 +85,7 @@
 				<div style="color: #000000;">
 					<span style="font-weight: bold;">*기술 스택 선택이 가능합니다. (복수 선택 가능)</span>
 				</div>
-				<form name="tsFrm">
+				<form name="tsFrm" id="tsFrm" method="GET">
 					<div class="form-group row" style="padding-left: 9px; padding-top: 100px;">
 						<div class="col-12" style="margin-bottom: 60px; text-align: center;">
 							<h2><span style="font-weight: bold;">Technical Stacks</span></h2>
@@ -139,9 +146,9 @@
 			</div>
 			<!-- section-footer -->
 			<div id="section-footer">
-				<input type="button" value="초기화" name="btnReset" id="btnReset" class="btn btn-dark" style="margin-right: 15px;"/>
 				<c:choose>
 				<c:when test="${ requestScope.isExist }">
+				<input type="button" value="초기화" name="btnReset" id="btnReset" class="btn btn-dark" style="margin-right: 15px;"/>
 				<input type="button" value="기술 스택 수정" name="btnModify" id="btnModify" class="btn btn-primary"/>
 				</c:when>
 				<c:otherwise>

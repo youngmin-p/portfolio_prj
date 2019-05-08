@@ -46,7 +46,7 @@ public class ExperienceService {
 	 * @return
 	 * @throws IOException 
 	 */
-	public boolean addExperience(HttpServletRequest request) throws IOException {
+	public String addExperience(HttpServletRequest request) throws IOException {
 		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest(
@@ -58,7 +58,13 @@ public class ExperienceService {
 		
 		flag = (p_dao.insertExperience(exp_vo) == 1);
 		
-		return flag;
+		String exp_cd = "";
+		
+		if (flag) {
+			exp_cd = mr.getParameter("exp_cd");
+		} // end if
+		
+		return exp_cd;
 	} // addExperience
 	
 	/**
@@ -67,7 +73,7 @@ public class ExperienceService {
 	 * @return
 	 * @throws IOException 
 	 */
-	public boolean modifyExperience(HttpServletRequest request) throws IOException {
+	public String modifyExperience(HttpServletRequest request) throws IOException {
 		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest(
@@ -77,22 +83,43 @@ public class ExperienceService {
 				(String) request.getAttribute("user_id"), mr.getParameter("exp_cd"), mr.getParameter("title"), 
 				mr.getParameter("contents"), mr.getFilesystemName("upload_img"));
 		
+		System.out.println("----- exp_vo 객체 값 " + exp_vo.toString());
+		
 		flag = (p_dao.updateExperience(exp_vo) == 1);
 		
-		return flag;
+		String exp_cd = "";
+		
+		if (flag) {
+			exp_cd = mr.getParameter("exp_cd");
+		} // end if
+		
+		return exp_cd;
 	} // modifyExperience
 	
 	/**
 	 * 관련 경험 초기화 (해당 아이디의 테이블에 존재하는 데이터 삭제)
 	 * @param user_id
 	 * @return
+	 * @throws IOException 
 	 */
-	public boolean resetExperience(String user_id) {
+	public String resetExperience(HttpServletRequest request) throws IOException {
 		boolean flag = false;
+
+		MultipartRequest mr = new MultipartRequest(
+				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
 		
-		flag = (p_dao.resetExperience(user_id) == 1);
+		ExperienceResetVO expr_vo = new ExperienceResetVO(
+				(String) request.getAttribute("user_id"), mr.getParameter("exp_cd"));
 		
-		return flag;
+		flag = (p_dao.resetExperience(expr_vo) == 1);
+		
+		String exp_cd = "";
+		
+		if (flag) {
+			exp_cd = mr.getParameter("exp_cd");
+		} // end if
+		
+		return exp_cd;
 	} // resetExperience
 	
 	// -------------------- 관련 경험 종료 -------------------- //

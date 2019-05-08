@@ -1,7 +1,7 @@
 package com.propofol.www.user.portfolio.vo;
 
 public class TellMeVO {
-	private String user_id, phone_no, email, blog;
+	private String user_id, phone_no, email, domain, blog;
 
 	public String getUser_id() {
 		return user_id;
@@ -26,7 +26,15 @@ public class TellMeVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public String getDomain() {
+		return domain;
+	}
 
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
+	
 	public String getBlog() {
 		return blog;
 	}

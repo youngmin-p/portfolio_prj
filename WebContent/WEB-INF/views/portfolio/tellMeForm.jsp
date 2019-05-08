@@ -40,6 +40,10 @@
 				$("#tmFrm").submit();
 			} // end if
 		}); // click
+		
+		$("#domain").change(function() {
+			alert($("#domain").val());
+		}); // change
 	}); // ready
 	
 	$(window).load(function() {
@@ -47,6 +51,16 @@
 			alert("${ requestScope.msg }");
 		} // end if
 	}); // load
+	
+	function chkEnableValue() {
+		/* 
+			유효성 검증
+			1) 핸드폰 번호
+			2) 이메일
+			3) 블로그
+			
+		*/
+	} // chkEnableValue
 </script>
 </head>
 <body>
@@ -74,7 +88,7 @@
    				<div style="color: #000000;">
 					<span style="font-weight: bold;">*연락처 등록이 가능합니다.</span>
 				</div>
-				<form name="tmFrm">
+				<form name="tmFrm" id="tmFrm" method="GET">
 					<!-- 핸드폰 번호 -->
 					<div class="form-group row" style="padding-left: 9px; padding-top: 80px;">
 						<div class="col-3" style="text-align: right; padding-right: 25px;">
@@ -104,9 +118,9 @@
 									<span style="font-size: 20px;">@</span>
 								</div>
 								<div class="col-4 mr-auto" style="padding-top: 32px;">
-									<select name="domain" class="custom-select">
-										<option value="naver.com">naver.com</option>
-										<option value="gmail.com">gmail.com</option>
+									<select name="domain" id="domain" class="custom-select">
+										<option value="naver.com"${ tm_search.domain eq "naver.com" ? "selected='selected'" : "''" }>naver.com</option>
+										<option value="gmail.com"${ tm_search.domain eq "gmail.com" ? "selected='selected'" : "''" }>gmail.com</option>
 									</select>
 									<!-- 이메일 주소에 대한 에러 메시지 출력 -->
 									<div style="margin-top: 8px; height: 30px; color: #FF0000;">
@@ -134,9 +148,9 @@
 			</div>
 			<!-- section-footer -->
 			<div id="section-footer">
-				<input type="button" value="초기화" name="btnReset" id="btnReset" class="btn btn-dark" style="margin-right: 15px;"/>
 				<c:choose>
 				<c:when test="${ requestScope.isExist }">
+				<input type="button" value="초기화" name="btnReset" id="btnReset" class="btn btn-dark" style="margin-right: 15px;"/>
 				<input type="button" value="연락처 수정" name="btnModify" id="btnModify" class="btn btn-primary"/>
 				</c:when>
 				<c:otherwise>

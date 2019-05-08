@@ -17,19 +17,115 @@
 
 <script type="text/javascript">
 	$(function() {
-		$("#exp_cd").val("${ exp_search.exp_cd }").prop("selected", true);
+		if (${ not empty exp_search.exp_cd }) {
+			$("#exp_cd").val("${ exp_search.exp_cd }").prop("selected", true);	
+		} // end if
+		
+		if (${ not empty requestScope.nexp_cd }) {
+			$("#exp_cd").val("${ requestScope.nexp_cd }").prop("selected", true);	
+		} // end if
+		
+		var exp_cd = $("#exp_cd").val();
+		
+		$("#thumbnail").click(function() {
+			$("#upload_img").click();
+		}); // clcick
+		
+		$("#upload_img").change(function() {
+			fileUpload(this);
+		}); // change
+		
+		$("#btnAdd").click(function() {
+			if (confirm(chkWord(exp_cd) + " 등록하시겠습니까?")) {
+				$("#expFrm").attr("action", "./experienceAdd.do");
+				
+				$("#expFrm").submit();
+			} // end if
+		}); // click
+		
+		$("#btnModify").click(function() {
+			if (confirm(chkWord(exp_cd) + " 수정하시겠습니까?")) {
+				$("#expFrm").attr("action", "./experienceModify.do");
+				
+				$("#expFrm").submit();				
+			} // end if
+		}); // click
+		
+		$("#btnReset").click(function() {
+			if (confirm(chkWord(exp_cd) + " 정말 초기화하시겠습니까?\n초기화된 데이터는 복구되지 않습니다.")) {
+				$("#expFrm").attr("action", "./experienceReset.do");
+				
+				$("#expFrm").submit();
+			} // end if
+		}); // click
 	}); // ready
 	
-	$(window).load(function() {
-		$("#exp_cd").change(function() {
-			var moveURL = "";
+	function fileUpload(evt) {
+		var upload_img = $("#upload_img").val();
+		
+		if (upload_img == "") {
+			alert("이미지를 선택해주세요.");
 			
-			alert($("#exp_cd").val());
+			return;
+		} // end if
+		
+		// 사용 가능한 이미지 확장자 검증 (.png, .jpg)
+		var isPossibleNames = ["png", "jpg"];
+		var isPossible = false;
+		
+		var fileName = upload_img.substring(upload_img.lastIndexOf(".") + 1);
+		
+		for (var i = 0; i < isPossibleNames.length; i++) {
+			if (fileName == isPossibleNames[i]) {
+				isPossible = true;
+			} // end if
+		} // end for
+		
+		if (isPossible) {
+			// 사용 가능한 형식일 때
+			showFileImg(evt);
+		} else {
+			alert("사용 가능한 이미지 형식이 아닙니다. 다시 시도해주세요.");
+		} // end else
+	} // fileUpload
+	
+	function showFileImg(img) {
+		// 이미지 프리뷰
+	    if (img.files && img.files[0]) {
+	    	var reader = new FileReader();
+	    	
+	        reader.onload = function(evt) {
+	        	$("#showImg").attr("src", evt.target.result);
+			} // onload
+	        
+	        reader.readAsDataURL(img.files[0]);
+	    } // end if
+	} // showFileImg
+	
+	function chkWord(exp_cd) {
+		var word = "";
+		
+		if (exp_cd == "Edu") {
+			word = "교육사항을";
+		} else {
+			word = "프로젝트를";
+		} // end else
+		
+		return word;
+	} // chkWord
+	
+	$(window).load(function() {
+		if ("${ requestScope.msg }" != "") {
+			alert("${ requestScope.msg }");
+		} // end if
+		
+		$("#exp_cd").change(function() {
+			var exp_cd = $("#exp_cd").val();
 			
 			// select된 값을 변수에 담아서, change가 발생했을 때 값을 비교
 			// 변경된 값이 있다면 confirm을 띄운다.
 			
-			location.href = "./experienceForm.do?exp_cd=" + $("#exp_cd").val();
+			location.href = "./experienceForm.do?exp_cd=" + exp_cd;
 		}); // change
 	}); // load
 </script>
@@ -56,27 +152,19 @@
 			<!-- section-main -->
 	    	<!-- 관련 경험 -->
 		    <div id="section-main">
-				<div style="color: #000000;">
-					<span style="font-weight: bold;">*관련 경험 등록이 가능합니다.</span>
-					<span style="float: right; width: 150px;">
-						<label for="exp_cd">페이지 선택</label>
-						<select name="exp_cd" id="exp_cd" class="custom-select" style="text-align-last: center;">
-							<option value="Edu">교육사항</option>
-							<option value="Prj">프로젝트</option>
-						</select>
-					</span>
-					<div style="clear: both;"></div>
-				</div>
 				<!-- import -->
-				<!-- 값이 없어도 "Prj"로 이동해야 하는데, 현재 로직에서는 "Prj"로 가는 방법이 없네. 수정이 필요함. -->
-				<!-- 190430 17:45 여기부터 작업 시작 : 시작 시 에러 발생 exp_cd 값이  -->
+				<c:if test="${ not empty exp_search }">
 				<c:import url="./experience${ exp_search.exp_cd }Slice.jsp"/>
+				</c:if>
+				<c:if test="${ not empty requestScope.nexp_cd }">
+				<c:import url="./experience${ requestScope.nexp_cd }Slice.jsp"/>
+				</c:if>
 			</div>
 			<!-- section-footer -->
 			<div id="section-footer">
-				<input type="button" value="초기화" name="btnReset" id="btnReset" class="btn btn-dark" style="margin-right: 15px;"/>
 				<c:choose>
 				<c:when test="${ requestScope.isExist }">
+				<input type="button" value="초기화" name="btnReset" id="btnReset" class="btn btn-dark" style="margin-right: 15px;"/>
 				<input type="button" value="관련 경험 수정" name="btnModify" id="btnModify" class="btn btn-primary"/>
 				</c:when>
 				<c:otherwise>

@@ -54,5 +54,11 @@ public class ExperienceVO {
 	public void setUpload_img(String upload_img) {
 		this.upload_img = upload_img;
 	}
+
+	@Override
+	public String toString() {
+		return "ExperienceVO [user_id=" + user_id + ", exp_cd=" + exp_cd + ", title=" + title + ", contents=" + contents
+				+ ", upload_img=" + upload_img + "]";
+	}
 	
 } // class

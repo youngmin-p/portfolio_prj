@@ -11,6 +11,7 @@ import com.propofol.www.user.portfolio.domain.ExperienceSearch;
 import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
 import com.propofol.www.user.portfolio.domain.TechStacksSearch;
 import com.propofol.www.user.portfolio.domain.TellMeSearch;
+import com.propofol.www.user.portfolio.service.ExperienceResetVO;
 import com.propofol.www.user.portfolio.vo.AboutMeVO;
 import com.propofol.www.user.portfolio.vo.ExperienceSearchVO;
 import com.propofol.www.user.portfolio.vo.ExperienceVO;
@@ -125,6 +126,8 @@ public class PortfolioDAO {
 		
 		result = ss.delete("deleteMyPortfolio", user_id);
 		
+		// 나머지 테이블 모두 삭제 필요
+		
 		ss.commit();
 		
 		ss.close();
@@ -216,17 +219,21 @@ public class PortfolioDAO {
 	 * @return
 	 */
 	public TechStacksSearch selectTechStacks(String user_id) {
-		TechStacksSearch ts_search = new TechStacksSearch();
+		TechStacksSearch ts_search = null;
 		
 		SqlSession ss = mb_dao.getSessionFactory().openSession();
 		
 		List<String> selectList = ss.selectList("selectTechStacks", user_id);
 		
-		ss.close();
-		
-		String[] selectArr = selectList.toArray(new String[selectList.size()]);
-		
-		ts_search.setSelected_technique(selectArr);
+		if (selectList.size() != 0) {
+			ss.close();
+			
+			ts_search = new TechStacksSearch();
+			
+			String[] selectArr = selectList.toArray(new String[selectList.size()]);
+			
+			ts_search.setSelected_technique(selectArr);
+		} // end if
 		
 		return ts_search;
 	} // selectTechStacks
@@ -239,11 +246,17 @@ public class PortfolioDAO {
 	public int insertTechStacks(TechStacksVO ts_vo) {
 		int result = 0;
 		
+		int cnt = ts_vo.getSelected_technique().length;
+		
 		SqlSession ss = mb_dao.getSessionFactory().openSession();
 		
 		result = ss.insert("insertTechStacks", ts_vo);
 		
-		ss.commit();
+		if (cnt == result) {
+			ss.commit();
+			
+			result = 1;
+		} // end if
 		
 		ss.close();
 		
@@ -285,7 +298,11 @@ public class PortfolioDAO {
 		
 		result = ss.delete("resetTechStacks", user_id);
 		
-		ss.commit();
+		if (result != 0) {
+			ss.commit();
+			
+			result = 1;
+		} // end if
 		
 		ss.close();
 		
@@ -323,6 +340,10 @@ public class PortfolioDAO {
 		
 		result = ss.insert("insertExperience", exp_vo);
 		
+		ss.commit();
+		
+		ss.close();
+		
 		return result;
 	} // insertExperience
 	
@@ -336,7 +357,15 @@ public class PortfolioDAO {
 		
 		SqlSession ss = mb_dao.getSessionFactory().openSession();
 		
+		System.out.println("----- dao 들어옴" + exp_vo.getExp_cd());
+		
 		result = ss.update("updateExperience", exp_vo);
+		
+		ss.commit();
+		
+		System.out.println("----- commit 완료");
+		
+		ss.close();
 		
 		return result;
 	} // updateExperience
@@ -346,12 +375,16 @@ public class PortfolioDAO {
 	 * @param exp_vo
 	 * @return
 	 */
-	public int resetExperience(String user_id) {
+	public int resetExperience(ExperienceResetVO expr_vo) {
 		int result = 0;
 		
 		SqlSession ss = mb_dao.getSessionFactory().openSession();
 		
-		result = ss.delete("resetExperience", user_id);
+		result = ss.delete("resetExperience", expr_vo);
+		
+		ss.commit();
+		
+		ss.close();
 		
 		return result;
 	} // resetExperience

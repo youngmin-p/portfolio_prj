@@ -1,7 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-				<form name="expFrm">
+				<form name="expFrm" id="expFrm" enctype="multipart/form-data" method="POST">
+					<div style="color: #000000;">
+						<span style="font-weight: bold;">*관련 경험 등록이 가능합니다.</span>
+						<span style="float: right; width: 150px;">
+							<label for="exp_cd">페이지 선택</label>
+							<select name="exp_cd" id="exp_cd" class="custom-select" style="text-align-last: center;">
+								<option value="Edu">교육사항</option>
+								<option value="Prj">프로젝트</option>
+							</select>
+						</span>
+						<div style="clear: both;"></div>
+					</div>
 					<div style="padding-left: 69px;">
 						<h4><span style="font-weight: bold;">프로젝트</span></h4>
 					</div>
@@ -22,8 +33,14 @@
 							</div>
 						</div>
 						<div class="col-5" style="text-align: center; margin-right: 30px;">
-							<img src="http://localhost:8080/propofol_prj/common/images/no_image.png" class="img-thumbnail" style="width: 300px; height: 300px;"/>
-							<!-- ajax 이용해서 전송 : button 클릭으로 $("#thumbnail").click() -->
+						<c:choose>
+						<c:when test="${ requestScope.isExist }">
+							<img src="http://localhost:8080/propofol_prj/upload/${ exp_search.upload_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
+						</c:when>
+						<c:otherwise>
+							<img src="http://localhost:8080/propofol_prj/common/images/no_image.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
+						</c:otherwise>
+						</c:choose>
 							<div style="margin-top: 10px;">
 								<input type="file" name="upload_img" id="upload_img" style="display:none;"/>
 								<label for="thumbnail" style="margin-right: 10px;">대표 이미지 등록</label>

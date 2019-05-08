@@ -127,26 +127,26 @@
 	
 	<!-- 관련 경험 초기화 (삭제) -->
 	<delete id="resetExperience" parameterType="String">
-		DELETE FROM EXPERIENCE WHERE USER_ID = #{ user_id }
+		DELETE FROM EXPERIENCE WHERE USER_ID = #{ user_id } AND EXP_CD = #{ exp_cd }
 	</delete>
 	
 	<!-- 연락처 조회 -->
 	<select id="selectTellMe" parameterType="String" resultType="com.propofol.www.user.portfolio.domain.TellMeSearch">
-		SELECT PHONE_NO, EMAIL, BLOG
+		SELECT PHONE_NO, EMAIL, BLOG, DOMAIN
 		FROM TELL_ME
 		WHERE USER_ID = #{ user_id }
 	</select>
 	
 	<!-- 연락처 등록 -->
 	<insert id="insertTellMe" parameterType="com.propofol.www.user.portfolio.vo.TellMeVO">
-		INSERT INTO TELL_ME (USER_ID, PHONE_NO, EMAIL, BLOG) 
-		VALUES (#{ user_id }, #{ phone_no }, #{ email }, #{ blog })
+		INSERT INTO TELL_ME (USER_ID, PHONE_NO, EMAIL, BLOG, DOMAIN) 
+		VALUES (#{ user_id }, #{ phone_no }, #{ email }, #{ blog }, #{ domain })
 	</insert>
 	
 	<!-- 연락처 수정 -->
 	<update id="updateTellMe" parameterType="com.propofol.www.user.portfolio.vo.TellMeVO">
 		UPDATE TELL_ME
-		SET PHONE_NO = #{ phone_no }, EMAIL = #{ email }, BLOG = #{ blog }
+		SET PHONE_NO = #{ phone_no }, EMAIL = #{ email }, BLOG = #{ blog }, DOMAIN = #{ domain }
 		WHERE USER_ID = #{ user_id }
 	</update>
 	

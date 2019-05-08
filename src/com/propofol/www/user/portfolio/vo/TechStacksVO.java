@@ -4,6 +4,10 @@ public class TechStacksVO {
 	private String user_id;
 	private String[] selected_technique;
 	
+	public TechStacksVO() {
+		
+	} // TechStacksVO
+
 	public String getUser_id() {
 		return user_id;
 	}
