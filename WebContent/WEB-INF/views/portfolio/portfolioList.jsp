@@ -22,6 +22,22 @@
 
 <script type="text/javascript">
 	$(function() {
+		moveFixBar();
+		
+		moveTopScroll();
+		
+		imageCaptionHover();
+		
+		onTheBottomScroll();
+		
+		getPortfolioOneDetail();
+		
+		/* 이미지를 클릭했을 때 비동기 전송으로 json 형태로 데이터를 받아와서, modal 창으로 화면을 띄워준다. */
+		
+		// 스크롤이 하단에 위치하게 되면 ajax로 데이터를 요청해서 성공 시에 func를 반복 실행하도록 하면 될 듯
+	}); // ready
+	
+	function moveFixBar() {
 		$(window).scroll(function() {
 			if ($(document).scrollTop() > 266) {
 				$("#section-search").addClass("section-search-fixed");
@@ -29,7 +45,19 @@
 				$("#section-search").removeClass("section-search-fixed");
 			} // end else
 		}); // scroll
-		
+	} // moveFixBar
+	
+	function moveTopScroll() {
+		$("#topbutton").click(function() {
+			$('html, body').animate({
+				scrollTop: 0
+			}, 500); // animate
+			
+			return false;
+		}); // click
+	} // moveTopScroll
+	
+	function imageCaptionHover() {
 		/* 이미지 캡션 a:hover */
 		 $(".portfolio-list-caption-contents").hover(
 				 function() {
@@ -38,11 +66,66 @@
 				 function() {
 			 		$(this).find(".portfolio-list-caption-title").css("z-index", "-1");
 				 });
-		 
+	} // imageCaptionHover
+	
+	function onTheBottomScroll() {
+		$(window).scroll(function() {
+			if ($(this).scrollTop() >= $(document).height() - $(window).height()) {
+				/* 문서의 끝에 도달하면 데이터를 불러오는 함수 호출 */
+				alert("문서의 끝임");
+				getPortfolioList();
+			} // end if
+		}); // scroll
+	} // onTheBottomScroll
+	
+	function getPortfolioList() {
+		var idx = $(".portfolio-list-caption > li").last().find(".portfolio-list-caption-data").data("num");
+		
+		alert("idx = " + idx);
 		/* 
-			이미지를 클릭했을 때 비동기 전송으로 json 형태로 데이터를 받아와서, modal 창으로 화면을 띄워준다.
-		*/
-	}); // ready
+		$.ajax({
+			url: "./portfolioListCall.do",
+			type: "get",
+			data: "target_id=" + target_id + "&",
+			dataType: "text",
+			success: function(json) {
+				//alert(json);
+			}, // success
+			error: function(xhr) {
+				alert(xhr.status + "\n" + xhr.statusText);
+			} // error
+		}); // ajax
+		
+		$("#modalView").modal();
+		 */
+		return false;
+	} // getPortfolioList
+	
+	function getPortfolioOneDetail() {
+		$(".portfolio-list-caption-contents").click(function() {
+			// data가 "undefined"인 경우에는 error page로 이동
+			//alert($(this).find(".portfolio-list-caption-data").data("user_id"));
+			
+			var target_id = $(this).find(".portfolio-list-caption-data").data("user_id");
+			
+			$.ajax({
+				url: "./portfolioView.do",
+				type: "get",
+				data: "target_id=" + target_id,
+				dataType: "text",
+				success: function(json) {
+					/* 게시판 리스트가 호출되면 ajax로 데이터를 가져온다. <ul>의 자식 <li> 마지막 요소에 <li>를 추가한다. */
+					/* 가져올 데이터 : user_id, thumbnail_img, title, hits */
+					
+				}, // success
+				error: function(xhr) {
+					alert(xhr.status + "\n" + xhr.statusText);
+				} // error
+			}); // ajax
+			
+			return false;
+		}); // click
+	} // getPortfolioOneDetail
 </script>
 </head>
 <body>
@@ -56,18 +139,21 @@
 		<div id="section-title">
 			<h1>SHOW YOUR PORTFOLIO!</h1>
 		</div>
+		<!-- searchFrm에서 검색 발생 시 어떤 방식으로 데이터를 가져올 것인지? -->
 		<div id="searchbar">
 			<form name="searchFrm" id="searchFrm" method="get">
 				<div id="section-search">
 					<div class="h-100">
 						<!-- topbutton -->
 						<div class="d-flex justify-content-center h-100" id="topbutton">
-							<h6>topbutton img</h6>
+							<a href="#">
+								<img src="http://localhost:8080/propofol_prj/common/images/topbutton.png" width="38px" height="38px"/>
+							</a>
 						</div>
 						<!-- searchbar -->
 						<div class="d-flex justify-content-center h-100" id="section-search-sb">
 							<div class="searchbar">
-								<input class="search_input" type="text" name="" id="" placeholder="검색어를 입력해주세요...">
+								<input type="text" name="search" id="search" class="search_input" placeholder="검색어를 입력해주세요...">
 								<a href="#" class="search_icon"><i class="fas fa-search"></i></a>
 							</div>
 						</div>
@@ -78,43 +164,45 @@
     	</div>
 		<!-- section-main -->
 	    <div id="section-main">
-	    	<!-- 게시판 로딩 (16개) -->
+	    	<!-- 모달 로딩 -->
+	    	<div class="modal fade" id="modalView">
+	    		<div class="modal-dialog modal-lg">
+	    			<div class="modal-content">
+	    				<!-- 모달 내용 삽입 .jsp 파일 -->
+	    				<c:import url="./portfolioView.jsp"/>
+	    			</div>
+	    		</div>
+	    	</div>
+	    	<!-- 게시판 로딩 -->
 	    	<div class="portfolio-list">
 	    		<!-- image caption -->
 	    		<ul class="portfolio-list-caption">
 	    			<!-- forEach로 조회된 게시판을 호출하는 부분 -->
+	    			<c:if test="${ not empty plsList }">
+	    			<c:forEach var="pls" items="${ plsList }">
 	    			<li class="portfolio-list-caption-contents">
-	    				<div class="portfolio-list-caption-title">
-	    					<div class="portfolio-list-caption-title-data">
-	    						<span class="portfolio-list-caption-title-left">제목</span>
-	    						<span class="portfolio-list-caption-title-right">작성일</span>
-	    					</div>
-	    					<div class="clear-both"></div>
-	    					<div class="portfolio-list-caption-title-data">
-	    						<span class="portfolio-list-caption-title-left">유저 아이디</span>
-	    						<span class="portfolio-list-caption-title-right">조회수</span>
-	    					</div>
-	    					<div class="clear-both"></div>
-	    				</div>
-	    				<div class="portfolio-list-caption-image">
-	    					<a href="#">
-	    						<img src="http://localhost:8080/propofol_prj/common/images/city_1.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 330px; height: 320px;"/>
-    						</a>
+	    				<div class="portfolio-list-caption-data" data-num="${ pls.num }" data-user_id="${ pls.user_id }">
+		    				<div class="portfolio-list-caption-title">
+		    					<div class="portfolio-list-caption-title-height">
+		    						<span class="portfolio-list-caption-title-left"><c:out value="${ pls.title }"/></span>
+		    						<span class="portfolio-list-caption-title-right"><c:out value="${ pls.write_dt }"/></span>
+		    					</div>
+		    					<div class="clear-both"></div>
+		    					<div class="portfolio-list-caption-title-height">
+		    						<span class="portfolio-list-caption-title-left"><c:out value="${ pls.user_id }"/></span>
+		    						<span class="portfolio-list-caption-title-right"><c:out value="${ pls.hits }"/></span>
+		    					</div>
+		    					<div class="clear-both"></div>
+		    				</div>
+		    				<div class="portfolio-list-caption-image">
+		    					<a href="#" data-target="#modalView">
+									<img src="http://localhost:8080/propofol_prj/common/images/${ pls.thumbnail_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 330px; height: 320px;"/>
+		    					</a>
+		    				</div>
 	    				</div>
     				</li>
-	    			<li class="portfolio-list-caption-contents">
-	    				<div class="portfolio-list-caption-title">
-	    					<span>image!</span>
-	    				</div>
-	    				<div class="portfolio-list-caption-image">
-	    					<a href="#">
-	    						<img src="http://localhost:8080/propofol_prj/common/images/no_image.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 330px; height: 320px;"/>
-    						</a>
-	    				</div>
-    				</li>
-	    			<li class="portfolio-list-caption-contents"><img src="http://localhost:8080/propofol_prj/common/images/no_image.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 330px; height: 320px;"/></li>
-	    			<li class="portfolio-list-caption-contents"><img src="http://localhost:8080/propofol_prj/common/images/no_image.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 330px; height: 320px;"/></li>
-	    			<li class="portfolio-list-caption-contents"><img src="http://localhost:8080/propofol_prj/common/images/no_image.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 330px; height: 320px;"/></li>
+    				</c:forEach>
+    				</c:if>
 	    		</ul>
 	    	</div>
 		</div>

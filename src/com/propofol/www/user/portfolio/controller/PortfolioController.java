@@ -1,21 +1,25 @@
 package com.propofol.www.user.portfolio.controller;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.propofol.www.user.portfolio.domain.AboutMeSearch;
 import com.propofol.www.user.portfolio.domain.ExperienceSearch;
 import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
+import com.propofol.www.user.portfolio.domain.PortfolioListSearch;
 import com.propofol.www.user.portfolio.domain.TechStacksSearch;
 import com.propofol.www.user.portfolio.domain.TellMeSearch;
 import com.propofol.www.user.portfolio.service.AboutMeService;
 import com.propofol.www.user.portfolio.service.ExperienceService;
 import com.propofol.www.user.portfolio.service.MyPortfolioService;
+import com.propofol.www.user.portfolio.service.PortfolioService;
 import com.propofol.www.user.portfolio.service.TechStacksService;
 import com.propofol.www.user.portfolio.service.TellMeService;
 import com.propofol.www.user.portfolio.vo.ExperienceSearchVO;
@@ -28,6 +32,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -49,6 +54,9 @@ public class PortfolioController {
 	
 	@Autowired(required=false)
 	private TellMeService tm_service;
+	
+	@Autowired(required=false)
+	private PortfolioService pl_service;
 	
 	/**
 	 * 내 포트폴리오 관리 화면 최초 진입점
@@ -745,10 +753,56 @@ public class PortfolioController {
 	// -------------------- 포트폴리오 게시판 시작 -------------------- //
 	
 	@RequestMapping(value="/portfolio/portfolioList.do", method=GET)
-	public String movePortfolioList() {
-		// 포트폴리오 섬네일, 제목 조회 결과
+	public String movePortfolioList(HttpSession session, Model model) {
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
 		
-		return "portfolio/portfolioList";
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			List<PortfolioListSearch> plsList = pl_service.searchPortfolioList();
+			
+			moveURL = "portfolio/portfolioList";
+			
+			model.addAttribute("plsList", plsList);
+		} // end if
+		
+		return moveURL;
 	} // movePortfolioList
+	
+	@ResponseBody
+	@RequestMapping(value="/portfolio/portfolioListCall.do", method=GET)
+	public String callPortfolioList() {
+		JSONObject json = new JSONObject();
+		
+		
+		
+		return json.toJSONString();
+	} // callPortfolioList
+	
+	@ResponseBody
+	@RequestMapping(value="/portfolio/portfolioView.do", method=GET, produces="aplication/text; charset=utf-8")
+	public String showPortfolioView(@RequestParam(name="target_id", required=false) String target_id, HttpSession session, Model model) {
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
+		
+		// temp data
+		user_id = "young";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			
+		} // end if
+		
+		System.out.println("----- target_id = " + target_id);
+		
+		moveURL = "portfolio/portfolioView";
+		
+		JSONObject json = pl_service.searchPortfolioView(target_id);
+		
+		System.out.println("---- json 요청");
+		
+		return json.toJSONString();
+	} // showPortfolioView
 	
 } // class

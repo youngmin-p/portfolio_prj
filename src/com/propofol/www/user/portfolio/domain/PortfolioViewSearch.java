@@ -3,41 +3,59 @@ package com.propofol.www.user.portfolio.domain;
 import java.util.List;
 
 public class PortfolioViewSearch {
-	private String[] selected_technique;
-	private List<AboutMeSearch> amList;
-	private List<TellMeSearch> tmList;
+	private AboutMeSearch am_search;
+	private TechStacksSearch ts_search;
+	private TellMeSearch tm_search;
 	private List<ExperienceSearch> expList;
 	
-	public String[] getSelected_technique() {
-		return selected_technique;
+	public PortfolioViewSearch() {
+		
+	} // PortfolioViewSearch
+
+	public PortfolioViewSearch(AboutMeSearch am_search, TechStacksSearch ts_search, TellMeSearch tm_search,
+			List<ExperienceSearch> expList) {
+		this.am_search = am_search;
+		this.ts_search = ts_search;
+		this.tm_search = tm_search;
+		this.expList = expList;
+	} // PortfolioViewSearch
+
+	public AboutMeSearch getAm_search() {
+		return am_search;
 	}
-	
-	public void setSelected_technique(String[] selected_technique) {
-		this.selected_technique = selected_technique;
+
+	public void setAm_search(AboutMeSearch am_search) {
+		this.am_search = am_search;
 	}
-	
-	public List<AboutMeSearch> getAmList() {
-		return amList;
+
+	public TechStacksSearch getTs_search() {
+		return ts_search;
 	}
-	
-	public void setAmList(List<AboutMeSearch> amList) {
-		this.amList = amList;
+
+	public void setTs_search(TechStacksSearch ts_search) {
+		this.ts_search = ts_search;
 	}
-	
-	public List<TellMeSearch> getTmList() {
-		return tmList;
+
+	public TellMeSearch getTm_search() {
+		return tm_search;
 	}
-	
-	public void setTmList(List<TellMeSearch> tmList) {
-		this.tmList = tmList;
+
+	public void setTm_search(TellMeSearch tm_search) {
+		this.tm_search = tm_search;
 	}
-	
+
 	public List<ExperienceSearch> getExpList() {
 		return expList;
 	}
-	
+
 	public void setExpList(List<ExperienceSearch> expList) {
 		this.expList = expList;
+	}
+
+	@Override
+	public String toString() {
+		return "PortfolioViewSearch [am_search=" + am_search + ", ts_search=" + ts_search + ", tm_search=" + tm_search
+				+ ", expList=" + expList + "]";
 	}
 	
 } // class

@@ -154,4 +154,34 @@
 	<delete id="resetTellMe" parameterType="String">
 		DELETE FROM TELL_ME WHERE USER_ID = #{ user_id }
 	</delete>
+	
+	<!-- 포트폴리오 게시물 수 조회 -->
+	<select id="selectPortfolioTotalCount" resultType="int">
+		SELECT COUNT(*) FROM PORTFOLIO
+	</select>
+	
+	<!-- 포트폴리오 게시판 조회 (최초 20건) -->
+	<select id="selectPortfolioList" parameterType="int" resultType="com.propofol.www.user.portfolio.domain.PortfolioListSearch">
+		SELECT NUM, THUMBNAIL_IMG, TITLE, WRITE_DT, USER_ID, HITS
+		FROM (SELECT ROW_NUMBER() OVER(ORDER BY WRITE_DT DESC) NUM, THUMBNAIL_IMG, TITLE, TO_CHAR(WRITE_DT, 'YYYY-MM-DD') WRITE_DT, USER_ID, HITS
+		      FROM PORTFOLIO)
+		WHERE NUM BETWEEN 1 AND 20
+	</select>
+	
+	<!-- 포트폴리오 게시판 조회 (ajax call) -->
+	<select id="selectPortfolioListCall" parameterType="com.propofol.www.user.portfolio.vo." resultType="com.propofol.www.user.portfolio.domain.PortfolioListSearch">
+		SELECT NUM, THUMBNAIL_IMG, TITLE, WRITE_DT, USER_ID, HITS
+		FROM (SELECT ROW_NUMBER() OVER(ORDER BY WRITE_DT DESC) NUM, THUMBNAIL_IMG, TITLE, TO_CHAR(WRITE_DT, 'YYYY-MM-DD') WRITE_DT, USER_ID, HITS
+		      FROM PORTFOLIO)
+		WHERE NUM BETWEEN #{ startIdx } AND #{ endIdx }		
+	</select>
+	
+	<!-- 관련 경험 조회 (포트폴리오 뷰) -->
+	<select id="selectExperienceList" parameterType="String" resultType="com.propofol.www.user.portfolio.domain.ExperienceSearch">
+		SELECT EXP_CD, TITLE, CONTENTS, UPLOAD_IMG
+		FROM EXPERIENCE
+		WHERE USER_ID = #{ target_id }
+	</select>
+	
+	
 </mapper>

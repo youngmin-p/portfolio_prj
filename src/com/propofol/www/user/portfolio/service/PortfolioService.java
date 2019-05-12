@@ -1,13 +1,19 @@
 package com.propofol.www.user.portfolio.service;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.propofol.www.user.dao.PortfolioDAO;
 import com.propofol.www.user.portfolio.domain.PortfolioListSearch;
 import com.propofol.www.user.portfolio.domain.PortfolioViewSearch;
 
+@Component
 public class PortfolioService {
+	
+	@Autowired(required=false)
 	private PortfolioDAO p_dao;
 	
 	public PortfolioService() {
@@ -18,27 +24,43 @@ public class PortfolioService {
 	// -------------------- 포트폴리오 게시판 시작 -------------------- //
 	
 	/**
-	 * 포트폴리오 게시판 조회 (비동기식)
-	 * @param user_id
+	 * 포트폴리오 게시글 수
 	 * @return
 	 */
-	public List<PortfolioListSearch> searchPortfolioList(int index) {
-		List<PortfolioListSearch> list = new ArrayList<PortfolioListSearch>();
+	public int portfolioTotalCount() {
+		int cnt = 0;
 		
-		// DAO 접근
-		// ajax로 받아오려면 json이 필요할 거 같은데?
+		cnt = p_dao.selectPortfolioTotalCount();
 		
+		return cnt;
+	} // portfolioTotalCount
+	
+	/**
+	 * 포트폴리오 게시판 조회 (최초 20건)
+	 * @return
+	 */
+	public List<PortfolioListSearch> searchPortfolioList() {
+		int cnt = portfolioTotalCount();
 		
-		return list;
+		if (cnt < 20) {
+			
+		} // end if
+		
+		List<PortfolioListSearch> plsList = p_dao.selectPortfolioList();
+		
+		return plsList;
 	} // searchPortfolioList
 	
-	public PortfolioViewSearch searchPortfolioView(String user_id) {
-		PortfolioViewSearch pv_search = null;
+	public JSONObject searchPortfolioView(String target_id) {
+		JSONObject json = new JSONObject();
 		
-		// DAO 접근
+		PortfolioViewSearch pv_search = p_dao.selectPortfolioView(target_id);
 		
+		System.out.println(pv_search.toString());
 		
-		return pv_search;
+		json.put("pv_search", pv_search);
+		
+		return json;
 	} // searchPortfolioView
 	
 	// -------------------- 포트폴리오 게시판 종료 -------------------- //

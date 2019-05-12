@@ -27,7 +27,7 @@
 /* top button */
 #topbutton {
 	float: left;
-	padding-left: 9px;
+	padding: 9px;
 }
 
 #section-search {
@@ -114,7 +114,7 @@
 	padding: 10px;
 	width: 340px;
 	height: 340px;
-	z-index: 999;	
+	z-index: 999;
 }
 
 .portfolio-list-caption-title {
@@ -144,7 +144,7 @@
 	float: right;
 }
 
-.portfolio-list-caption-title-data {
+.portfolio-list-caption-title-height {
 	height: 28px;
 }
 
@@ -159,6 +159,16 @@
     height: 320px;
     z-index: 0;
      */
+}
+
+#modalView {
+	z-index: 19999;
+}
+
+.modal-content {
+	background-color: red;
+	width: 80%;
+	min-height: 1200px;
 }
 
 #section-head {

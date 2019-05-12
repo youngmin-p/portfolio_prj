@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import com.propofol.www.user.portfolio.domain.AboutMeSearch;
 import com.propofol.www.user.portfolio.domain.ExperienceSearch;
 import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
+import com.propofol.www.user.portfolio.domain.PortfolioListSearch;
+import com.propofol.www.user.portfolio.domain.PortfolioViewSearch;
 import com.propofol.www.user.portfolio.domain.TechStacksSearch;
 import com.propofol.www.user.portfolio.domain.TellMeSearch;
 import com.propofol.www.user.portfolio.service.ExperienceResetVO;
@@ -465,11 +467,121 @@ public class PortfolioDAO {
 		return result;
 	} // resetTellMe
 	
+	// -------------------- 포트폴리오 게시판 -------------------- //
+	
+	/**
+	 * 포트폴리오 게시물 수 조회
+	 * @return
+	 */
+	public int selectPortfolioTotalCount() {
+		int cnt = 0;
+		
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
+		
+		cnt = ss.selectOne("selectPortfolioTotalCount");
+		
+		ss.close();
+		
+		return cnt;
+	} // selectPortfolioCount
+	
+	/**
+	 * 포트폴리오 게시물 조회 (최초 20건)
+	 * @return
+	 */
+	public List<PortfolioListSearch> selectPortfolioList() {
+		List<PortfolioListSearch> plsList = null;
+		
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
+		
+		plsList = ss.selectList("selectPortfolioList");
+		
+		ss.close();
+		
+		return plsList;
+	} // selectPortfolioList
+	
+	public List<PortfolioListSearch> selectPortfolioListCall(int idx) {
+		List<PortfolioListSearch> plsList = null;
+		
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
+		
+		plsList = ss.selectList("selectPortfolioListCall", idx);
+		
+		ss.close();
+		
+		return plsList;
+	} // selectPortfolioList
+	
+	/**
+	 * 선택한 유저의 포트폴리오 게시물 보기
+	 * @param user_id
+	 * @return
+	 */
+	public PortfolioViewSearch selectPortfolioView(String target_id) {
+		PortfolioViewSearch pv_search = null;
+		
+		AboutMeSearch am_search = selectAboutMe(target_id);
+		TechStacksSearch ts_search = selectTechStacks(target_id);
+		TellMeSearch tm_search = selectTellMe(target_id);
+		List<ExperienceSearch> expList = selectExperience(target_id);
+		
+		pv_search = new PortfolioViewSearch(am_search, ts_search, tm_search, expList);
+		
+		return pv_search;
+	} // selectPortfolioView
+	
+	/**
+	 * 관련 경험 조회 (포트폴리오 게시글)
+	 * @param target_id
+	 * @return
+	 */
+	public List<ExperienceSearch> selectExperience(String target_id) {
+		List<ExperienceSearch> exp_search = null;
+		
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
+		
+		exp_search = ss.selectList("selectExperienceList", target_id);
+		
+		ss.close();
+		
+		return exp_search;
+	} // selectExperience
+	
 	// unit test
 	public static void main(String[] args) {
 		PortfolioDAO p_dao = new PortfolioDAO();
 		
+//		List<PortfolioListSearch> plsList = p_dao.selectPortfolioList();
+//		
+//		for (PortfolioListSearch pls : plsList) {
+//			System.out.println(pls.toString());
+//		}
 		
+//		int cnt = p_dao.selectPortfolioTotalCount();
+//		System.out.println(cnt);
+		
+//		List<ExperienceSearch> list = p_dao.selectExperience("young");
+//		
+//		for (ExperienceSearch exp_search : list) {
+//			System.out.println(exp_search.toString());
+//		}
+		
+//		String target_id = "young";
+//		AboutMeSearch am_search = p_dao.selectAboutMe(target_id);
+//		System.out.println(am_search);
+		
+//		String target_id = "young";
+//		PortfolioViewSearch pv_search = p_dao.selectPortfolioView(target_id);
+//		System.out.println(pv_search.toString());
+		
+		int idx = 20;
+		
+		List<PortfolioListSearch> plsList = p_dao.selectPortfolioListCall(idx);
+		
+		for (PortfolioListSearch pls : plsList) {
+			System.out.println(pls);
+		}
 		
 	} // main
 	
