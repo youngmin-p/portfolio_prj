@@ -18,6 +18,7 @@ import com.propofol.www.user.portfolio.vo.AboutMeVO;
 import com.propofol.www.user.portfolio.vo.ExperienceSearchVO;
 import com.propofol.www.user.portfolio.vo.ExperienceVO;
 import com.propofol.www.user.portfolio.vo.MyPortfolioVO;
+import com.propofol.www.user.portfolio.vo.PortfolioListIdx;
 import com.propofol.www.user.portfolio.vo.TechStacksVO;
 import com.propofol.www.user.portfolio.vo.TellMeVO;
 
@@ -501,12 +502,17 @@ public class PortfolioDAO {
 		return plsList;
 	} // selectPortfolioList
 	
-	public List<PortfolioListSearch> selectPortfolioListCall(int idx) {
+	/**
+	 * 포트폴리오 게시물 조회 (10건, ajax call)
+	 * @param idx
+	 * @return
+	 */
+	public List<PortfolioListSearch> selectPortfolioListCall(PortfolioListIdx plIdx) {
 		List<PortfolioListSearch> plsList = null;
 		
 		SqlSession ss = mb_dao.getSessionFactory().openSession();
 		
-		plsList = ss.selectList("selectPortfolioListCall", idx);
+		plsList = ss.selectList("selectPortfolioListCall", plIdx);
 		
 		ss.close();
 		
@@ -552,37 +558,11 @@ public class PortfolioDAO {
 	public static void main(String[] args) {
 		PortfolioDAO p_dao = new PortfolioDAO();
 		
-//		List<PortfolioListSearch> plsList = p_dao.selectPortfolioList();
-//		
-//		for (PortfolioListSearch pls : plsList) {
-//			System.out.println(pls.toString());
-//		}
+		String target_id = "young";
 		
-//		int cnt = p_dao.selectPortfolioTotalCount();
-//		System.out.println(cnt);
+		PortfolioViewSearch pv_search = p_dao.selectPortfolioView(target_id);
 		
-//		List<ExperienceSearch> list = p_dao.selectExperience("young");
-//		
-//		for (ExperienceSearch exp_search : list) {
-//			System.out.println(exp_search.toString());
-//		}
-		
-//		String target_id = "young";
-//		AboutMeSearch am_search = p_dao.selectAboutMe(target_id);
-//		System.out.println(am_search);
-		
-//		String target_id = "young";
-//		PortfolioViewSearch pv_search = p_dao.selectPortfolioView(target_id);
-//		System.out.println(pv_search.toString());
-		
-		int idx = 20;
-		
-		List<PortfolioListSearch> plsList = p_dao.selectPortfolioListCall(idx);
-		
-		for (PortfolioListSearch pls : plsList) {
-			System.out.println(pls);
-		}
-		
+		System.out.println(pv_search.toString());
 	} // main
 	
 } // class

@@ -169,7 +169,7 @@
 	</select>
 	
 	<!-- 포트폴리오 게시판 조회 (ajax call) -->
-	<select id="selectPortfolioListCall" parameterType="com.propofol.www.user.portfolio.vo." resultType="com.propofol.www.user.portfolio.domain.PortfolioListSearch">
+	<select id="selectPortfolioListCall" parameterType="com.propofol.www.user.portfolio.vo.PortfolioListIdx" resultType="com.propofol.www.user.portfolio.domain.PortfolioListSearch">
 		SELECT NUM, THUMBNAIL_IMG, TITLE, WRITE_DT, USER_ID, HITS
 		FROM (SELECT ROW_NUMBER() OVER(ORDER BY WRITE_DT DESC) NUM, THUMBNAIL_IMG, TITLE, TO_CHAR(WRITE_DT, 'YYYY-MM-DD') WRITE_DT, USER_ID, HITS
 		      FROM PORTFOLIO)

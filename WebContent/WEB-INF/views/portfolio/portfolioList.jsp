@@ -59,7 +59,7 @@
 	
 	function imageCaptionHover() {
 		/* 이미지 캡션 a:hover */
-		 $(".portfolio-list-caption-contents").hover(
+		$(".portfolio-list-caption-contents").hover(
 				 function() {
 					 $(this).find(".portfolio-list-caption-title").css("z-index", "99");
 				 }, 
@@ -71,34 +71,63 @@
 	function onTheBottomScroll() {
 		$(window).scroll(function() {
 			if ($(this).scrollTop() >= $(document).height() - $(window).height()) {
-				/* 문서의 끝에 도달하면 데이터를 불러오는 함수 호출 */
-				alert("문서의 끝임");
-				getPortfolioList();
+				/* 문서의 끝에 도달하면 게시글 목록 호출 */
+				setTimeout(function() {
+					getPortfolioList();
+				}, 500);
 			} // end if
 		}); // scroll
 	} // onTheBottomScroll
 	
 	function getPortfolioList() {
+		/* 게시판 리스트가 호출되면 ajax로 데이터를 가져온다. <ul>의 자식 <li> 마지막 요소에 <li>를 추가한다. */
 		var idx = $(".portfolio-list-caption > li").last().find(".portfolio-list-caption-data").data("num");
 		
-		alert("idx = " + idx);
-		/* 
 		$.ajax({
 			url: "./portfolioListCall.do",
 			type: "get",
-			data: "target_id=" + target_id + "&",
-			dataType: "text",
-			success: function(json) {
-				//alert(json);
+			data: "idx=" + idx,
+			dataType: "json",
+			success: function(json_obj) {
+				var json_arr = json_obj.plsList;
+				
+				$.each(json_arr, function(i, json) {
+					var addContents = "";
+					
+					addContents = 
+						"	    			<li class='portfolio-list-caption-contents'>" + 
+						"    					<div class='portfolio-list-caption-data' data-num='" + json.num + "' data-user_id='" + json.user_id + "'>" + 
+						"	    					<div class='portfolio-list-caption-title'>" + 
+						"	    						<div class='portfolio-list-caption-title-height'>" + 
+						"	    							<span class='portfolio-list-caption-title-left'><c:out value='" + json.title + "' escapeXml='false'/></span>" + 
+						"	    							<span class='portfolio-list-caption-title-right'><c:out value='" + json.write_dt + "' escapeXml='false'/></span>" + 
+						"	    						</div>" + 
+						"	    						<div class='clear-both'></div>" + 
+						"	    						<div class='portfolio-list-caption-title-height'>" + 
+						"	    							<span class='portfolio-list-caption-title-left'><c:out value='" + json.user_id + "' escapeXml='false'/></span>" + 
+						"	    							<span class='portfolio-list-caption-title-right'><c:out value='" + json.hits + "' escapeXml='false'/></span>" + 
+						"	    						</div>" + 
+						"	    						<div class='clear-both'></div>" + 
+						"	    					</div>" + 
+						"	    					<div class='portfolio-list-caption-image'>" + 
+						"	    						<a href='#' data-target='#modalView'>" + 
+						"									<img src='http://localhost:8080/propofol_prj/upload/" + json.thumbnail_img + "' name='showImg' id='showImg' class='img-thumbnail' style='width: 330px; height: 320px;'/>" + 
+						"	    						</a>" + 
+						"	    					</div>" + 
+						"    					</div>" + 
+						"					</li>";
+					
+					$(".portfolio-list-caption").last().append(addContents);
+				}) // each
+				
+				imageCaptionHover();
+				
+				getPortfolioOneDetail();
 			}, // success
 			error: function(xhr) {
 				alert(xhr.status + "\n" + xhr.statusText);
 			} // error
 		}); // ajax
-		
-		$("#modalView").modal();
-		 */
-		return false;
 	} // getPortfolioList
 	
 	function getPortfolioOneDetail() {
@@ -112,16 +141,16 @@
 				url: "./portfolioView.do",
 				type: "get",
 				data: "target_id=" + target_id,
-				dataType: "text",
-				success: function(json) {
-					/* 게시판 리스트가 호출되면 ajax로 데이터를 가져온다. <ul>의 자식 <li> 마지막 요소에 <li>를 추가한다. */
-					/* 가져올 데이터 : user_id, thumbnail_img, title, hits */
-					
+				dataType: "json",
+				success: function(json_obj) {
+					alert(json_obj);
 				}, // success
 				error: function(xhr) {
 					alert(xhr.status + "\n" + xhr.statusText);
 				} // error
 			}); // ajax
+			
+			$("#modalView").modal();
 			
 			return false;
 		}); // click
@@ -166,7 +195,7 @@
 	    <div id="section-main">
 	    	<!-- 모달 로딩 -->
 	    	<div class="modal fade" id="modalView">
-	    		<div class="modal-dialog modal-lg">
+	    		<div class="modal-dialog" id="modalDialog">
 	    			<div class="modal-content">
 	    				<!-- 모달 내용 삽입 .jsp 파일 -->
 	    				<c:import url="./portfolioView.jsp"/>
@@ -196,7 +225,7 @@
 		    				</div>
 		    				<div class="portfolio-list-caption-image">
 		    					<a href="#" data-target="#modalView">
-									<img src="http://localhost:8080/propofol_prj/common/images/${ pls.thumbnail_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 330px; height: 320px;"/>
+									<img src="http://localhost:8080/propofol_prj/upload/${ pls.thumbnail_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 330px; height: 320px;"/>
 		    					</a>
 		    				</div>
 	    				</div>

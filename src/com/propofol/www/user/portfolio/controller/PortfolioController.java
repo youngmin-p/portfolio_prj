@@ -772,18 +772,27 @@ public class PortfolioController {
 	} // movePortfolioList
 	
 	@ResponseBody
-	@RequestMapping(value="/portfolio/portfolioListCall.do", method=GET)
-	public String callPortfolioList() {
-		JSONObject json = new JSONObject();
+	@RequestMapping(value="/portfolio/portfolioListCall.do", method=GET, produces="application/json; charset=utf-8")
+	public String callPortfolioList(@RequestParam(name="idx", required=false) int idx, HttpSession session) {
+		JSONObject json_obj = new JSONObject();
 		
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/error/error.html";
 		
+		if (user_id != null && !"".equals(user_id)) {
+			
+		} // end if
 		
-		return json.toJSONString();
+		json_obj = pl_service.searchPortfolioListCall(idx);
+		
+		return json_obj.toJSONString();
 	} // callPortfolioList
 	
 	@ResponseBody
-	@RequestMapping(value="/portfolio/portfolioView.do", method=GET, produces="aplication/text; charset=utf-8")
-	public String showPortfolioView(@RequestParam(name="target_id", required=false) String target_id, HttpSession session, Model model) {
+	@RequestMapping(value="/portfolio/portfolioView.do", method=GET, produces="aplication/json; charset=utf-8")
+	public String showPortfolioView(@RequestParam(name="target_id", required=false) String target_id, HttpSession session) {
+		JSONObject json_obj = new JSONObject();
+		
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
@@ -798,11 +807,11 @@ public class PortfolioController {
 		
 		moveURL = "portfolio/portfolioView";
 		
-		JSONObject json = pl_service.searchPortfolioView(target_id);
+		json_obj = pl_service.searchPortfolioView(target_id);
 		
 		System.out.println("---- json ø‰√ª");
 		
-		return json.toJSONString();
+		return json_obj.toJSONString();
 	} // showPortfolioView
 	
 } // class
