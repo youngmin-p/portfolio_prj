@@ -11,6 +11,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.propofol.www.user.dao.PortfolioDAO;
 import com.propofol.www.user.portfolio.domain.ExperienceSearch;
+import com.propofol.www.user.portfolio.vo.ExperienceResetVO;
 import com.propofol.www.user.portfolio.vo.ExperienceSearchVO;
 import com.propofol.www.user.portfolio.vo.ExperienceVO;
 

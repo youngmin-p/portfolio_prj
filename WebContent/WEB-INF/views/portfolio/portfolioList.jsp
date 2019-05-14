@@ -143,7 +143,101 @@
 				data: "target_id=" + target_id,
 				dataType: "json",
 				success: function(json_obj) {
-					alert(json_obj);
+					$(".modalHeader-title").empty();
+					$("#modalHeader-id").empty();
+					$("#modalHeader-dt").empty();
+					
+					$("#am_title").attr("value", "");
+					$("#am_contents").empty();
+					$("#am_upload_img").attr("src", "");
+					
+					$(".modal-body-techStacks-tech").empty();
+					
+					$(".modalHeader-title").html(json_obj.title);
+					$("#modalHeader-id").html(json_obj.user_id);
+					$("#modalHeader-dt").html(json_obj.write_dt);
+					
+					$("#edu_title").attr("value", "");
+					$("#edu_contents").empty();
+					$("#edu_upload_img").attr("src", "");
+					
+					$("#prj_title").attr("value", "");
+					$("#prj_contents").empty();
+					$("#prj_upload_img").attr("src", "");
+					
+					$("#tm_phone_no").attr("value", "");
+					$("#tm_email").attr("value", "");
+					$("#tm_domain").attr("value", "");
+					$("#tm_blog").attr("value", "");
+					
+					if (json_obj.am_result) {
+						$(".modal-body-aboutMe").show();
+						
+						$("#am_title").attr("value", json_obj.am_title);
+						$("#am_contents").html(json_obj.am_contents);
+						$("#am_upload_img").attr("src", "http://localhost:8080/propofol_prj/upload/" + json_obj.am_upload_img);						
+					} else {
+						$(".modal-body-aboutMe").hide();
+					} // end else
+					
+					if (json_obj.ts_result) {
+						$(".modal-body-techStacks").show();
+						
+						var addContents = "";
+						
+						addContents += "<ul class='modal-body-techStacks-list'>";
+						
+						$.each(json_obj.ts_selected_technique, function(i, tech) {
+							addContents += "	<li>";
+							addContents += "		<img src='http://localhost:8080/propofol_prj/common/images/icon_" + tech.technique + ".png' width='120px' height='120px'/>";
+							addContents += "	</li>";
+						}) // each
+						
+						addContents += "</ul>";
+						
+						$(".modal-body-techStacks-tech").html(addContents);
+					} else {
+						$(".modal-body-techStacks").hide();
+					} // end else
+					
+					if (json_obj.edu_result) {
+						$(".modal-body-experience-edu").show();
+						
+						$.each(json_obj.expList, function(i, exp) {
+							if ("Edu" == exp.exp_cd) {
+								$("#edu_title").attr("value", exp.exp_title);
+								$("#edu_contents").html(exp.exp_contents);
+								$("#edu_upload_img").attr("src", "http://localhost:8080/propofol_prj/upload/" + exp.exp_upload_img);
+							} // end if
+						}) // each
+					} else {
+						$(".modal-body-experience-edu").hide();
+					} // end else
+					
+					if (json_obj.prj_result) {
+						$(".modal-body-experience-prj").show();
+						
+						$.each(json_obj.expList, function(i, exp) {
+							if ("Prj" == exp.exp_cd) {
+								$("#prj_title").attr("value", exp.exp_title);
+								$("#prj_contents").html(exp.exp_contents);
+								$("#prj_upload_img").attr("src", "http://localhost:8080/propofol_prj/upload/" + exp.exp_upload_img);
+							} // end if
+						}) // each
+					} else {
+						$(".modal-body-experience-prj").hide();
+					} // end else
+					
+					if (json_obj.tm_result) {
+						$(".modal-body-tellMe").show();
+						
+						$("#tm_phone_no").attr("value", json_obj.tm_phone_no);
+						$("#tm_email").attr("value", json_obj.tm_email);
+						$("#tm_domain").attr("value", json_obj.tm_domain);
+						$("#tm_blog").attr("value", json_obj.tm_blog);
+					} else {
+						$(".modal-body-tellMe").hide();
+					} // end else
 				}, // success
 				error: function(xhr) {
 					alert(xhr.status + "\n" + xhr.statusText);
@@ -197,7 +291,7 @@
 	    	<div class="modal fade" id="modalView">
 	    		<div class="modal-dialog" id="modalDialog">
 	    			<div class="modal-content">
-	    				<!-- 모달 내용 삽입 .jsp 파일 -->
+	    				<!-- 모달 내용 삽입 -->
 	    				<c:import url="./portfolioView.jsp"/>
 	    			</div>
 	    		</div>

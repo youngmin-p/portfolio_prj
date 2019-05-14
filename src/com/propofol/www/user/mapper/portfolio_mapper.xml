@@ -176,6 +176,13 @@
 		WHERE NUM BETWEEN #{ startIdx } AND #{ endIdx }		
 	</select>
 	
+	<!-- 포트폴리오 게시글 타이틀 조회 -->
+	<select id="selectPortfolioViewTitle" parameterType="String" resultType="com.propofol.www.user.portfolio.domain.PortfolioViewTitleSearch">
+		SELECT TITLE, USER_ID, TO_CHAR(WRITE_DT, 'YYYY-MM-DD HH24:MM:SS') WRITE_DT
+		FROM PORTFOLIO
+		WHERE USER_ID = #{ target_id }
+	</select>
+	
 	<!-- 관련 경험 조회 (포트폴리오 뷰) -->
 	<select id="selectExperienceList" parameterType="String" resultType="com.propofol.www.user.portfolio.domain.ExperienceSearch">
 		SELECT EXP_CD, TITLE, CONTENTS, UPLOAD_IMG

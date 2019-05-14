@@ -186,8 +186,118 @@
 	min-height: 1000px;
 }
 
+/* portfolioView : 자기소개 */
+.modal-body-title {
+	margin: 35px 110px;
+	font-size: 28px;
+	font-weight: bold;
+	font-family: 나눔고딕;
+}
+
+.modal-body-aboutMe {
+	margin-top: 100px;
+	font-size: 14px;
+}
+
+.modal-body-aboutMe-image {
+	text-align: center;
+}
+
+.modal-body-aboutMe-title:disabled {
+	margin-bottom: 53px;
+	background-color: #FFF !important;
+}
+
+.modal-body-aboutMe-contents {
+	background-color: #FFF !important;
+	resize: none;
+}
+
+/* portfolioView : 기술 스택 */
+.modal-body-techStacks {
+	margin-top: 100px;
+	font-size: 14px;
+}
+
+.modal-body-techStacks-list {
+	text-align: center;
+}
+
+.modal-body-techStacks-list li {
+	display: inline-block;
+	padding: 10px;
+	width: 140px;
+	height: 140px;
+}
+
+.modal-body-techStacks-tech {
+	padding: 0px 115px;
+}
+
+/* portfolioView : 관련 경험 */
+.modal-body-experience-edu {
+	margin-top: 100px;
+	font-size: 14px;
+}
+
+.modal-body-experience-edu-image {
+	text-align: center;
+}
+
+.modal-body-experience-edu-title:disabled {
+	margin-bottom: 53px;
+	background-color: #FFF !important;
+}
+
+.modal-body-experience-edu-contents {
+	background-color: #FFF !important;
+	resize: none;
+}
+
+.modal-body-experience-prj {
+	margin-top: 100px;
+	font-size: 14px;
+}
+
+.modal-body-experience-prj-image {
+	text-align: center;
+}
+
+.modal-body-experience-prj-title:disabled {
+	margin-bottom: 53px;
+	background-color: #FFF !important;
+}
+
+.modal-body-experience-prj-contents {
+	background-color: #FFF !important;
+	resize: none;
+}
+
+/* portfolioView : 연락처 */
+.modal-body-tellMe {
+	margin-top: 100px;
+	font-size: 14px;
+}
+
+.modal-body-tellMe-phoneNo {
+	background-color: #FFF !important;
+}
+
+.modal-body-tellMe-email {
+	background-color: #FFF !important;
+}
+
+.modal-body-tellMe-domain {
+	background-color: #FFF !important;
+}
+
+.modal-body-tellMe-blog {
+	background-color: #FFF !important;
+}
+
 #modalFooter {
 	padding: 32px;
+	margin-top: 110px;
 	height: 100px;
 	color: #FFF;
 	background-color: #000;
@@ -205,12 +315,12 @@
 	font-weight: bold;
 }
 
-.modalHeader-id {
+.modalHeader-body {
 	font-size: 14px;
 }
 
 .modalHeader-wide {
-	margin: 0px 10px;
+	margin: 0px 8px;
 }
 
 #section-head {

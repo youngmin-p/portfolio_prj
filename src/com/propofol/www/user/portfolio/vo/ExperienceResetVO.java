@@ -1,4 +1,4 @@
-package com.propofol.www.user.portfolio.service;
+package com.propofol.www.user.portfolio.vo;
 
 public class ExperienceResetVO {
 	private String user_id, exp_cd;

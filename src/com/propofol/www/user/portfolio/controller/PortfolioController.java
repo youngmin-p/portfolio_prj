@@ -1,6 +1,8 @@
 package com.propofol.www.user.portfolio.controller;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -790,7 +792,7 @@ public class PortfolioController {
 	
 	@ResponseBody
 	@RequestMapping(value="/portfolio/portfolioView.do", method=GET, produces="aplication/json; charset=utf-8")
-	public String showPortfolioView(@RequestParam(name="target_id", required=false) String target_id, HttpSession session) {
+	public String showPortfolioView(@RequestParam(name="target_id", required=false) String target_id, HttpSession session, Model model) {
 		JSONObject json_obj = new JSONObject();
 		
 		String user_id = (String) session.getAttribute("user_id");
@@ -803,13 +805,9 @@ public class PortfolioController {
 			
 		} // end if
 		
-		System.out.println("----- target_id = " + target_id);
-		
-		moveURL = "portfolio/portfolioView";
-		
 		json_obj = pl_service.searchPortfolioView(target_id);
 		
-		System.out.println("---- json 요청");
+		System.out.println("----- json 요청 : " + json_obj);
 		
 		return json_obj.toJSONString();
 	} // showPortfolioView

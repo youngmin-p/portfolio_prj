@@ -10,11 +10,11 @@ import com.propofol.www.user.portfolio.domain.AboutMeSearch;
 import com.propofol.www.user.portfolio.domain.ExperienceSearch;
 import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
 import com.propofol.www.user.portfolio.domain.PortfolioListSearch;
-import com.propofol.www.user.portfolio.domain.PortfolioViewSearch;
+import com.propofol.www.user.portfolio.domain.PortfolioViewTitleSearch;
 import com.propofol.www.user.portfolio.domain.TechStacksSearch;
 import com.propofol.www.user.portfolio.domain.TellMeSearch;
-import com.propofol.www.user.portfolio.service.ExperienceResetVO;
 import com.propofol.www.user.portfolio.vo.AboutMeVO;
+import com.propofol.www.user.portfolio.vo.ExperienceResetVO;
 import com.propofol.www.user.portfolio.vo.ExperienceSearchVO;
 import com.propofol.www.user.portfolio.vo.ExperienceVO;
 import com.propofol.www.user.portfolio.vo.MyPortfolioVO;
@@ -520,24 +520,6 @@ public class PortfolioDAO {
 	} // selectPortfolioList
 	
 	/**
-	 * 선택한 유저의 포트폴리오 게시물 보기
-	 * @param user_id
-	 * @return
-	 */
-	public PortfolioViewSearch selectPortfolioView(String target_id) {
-		PortfolioViewSearch pv_search = null;
-		
-		AboutMeSearch am_search = selectAboutMe(target_id);
-		TechStacksSearch ts_search = selectTechStacks(target_id);
-		TellMeSearch tm_search = selectTellMe(target_id);
-		List<ExperienceSearch> expList = selectExperience(target_id);
-		
-		pv_search = new PortfolioViewSearch(am_search, ts_search, tm_search, expList);
-		
-		return pv_search;
-	} // selectPortfolioView
-	
-	/**
 	 * 관련 경험 조회 (포트폴리오 게시글)
 	 * @param target_id
 	 * @return
@@ -554,15 +536,21 @@ public class PortfolioDAO {
 		return exp_search;
 	} // selectExperience
 	
-	// unit test
-	public static void main(String[] args) {
-		PortfolioDAO p_dao = new PortfolioDAO();
+	/**
+	 * 포트폴리오 게시글 타이틀 조회
+	 * @param target_id
+	 * @return
+	 */
+	public PortfolioViewTitleSearch selectPortfolioViewTitle(String target_id) {
+		PortfolioViewTitleSearch pvt_search = null;
 		
-		String target_id = "young";
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
 		
-		PortfolioViewSearch pv_search = p_dao.selectPortfolioView(target_id);
+		pvt_search = ss.selectOne("selectPortfolioViewTitle", target_id);
 		
-		System.out.println(pv_search.toString());
-	} // main
+		ss.close();
+		
+		return pvt_search;
+	} // selectPortfolioViewTitle
 	
 } // class

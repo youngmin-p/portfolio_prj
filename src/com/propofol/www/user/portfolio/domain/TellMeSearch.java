@@ -34,5 +34,11 @@ public class TellMeSearch {
 	public void setBlog(String blog) {
 		this.blog = blog;
 	}
+
+	@Override
+	public String toString() {
+		return "TellMeSearch [phone_no=" + phone_no + ", email=" + email + ", domain=" + domain + ", blog=" + blog
+				+ "]";
+	}
 	
 } // class
