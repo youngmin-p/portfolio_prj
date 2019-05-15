@@ -73,7 +73,7 @@
 							<!-- 핸드폰 번호 -->
 							<div class="row" style="padding-top: 30px;">
 								<div class="col-3" style="text-align: right; padding-right: 25px;">
-									<img src="http://localhost:8080/propofol_prj/common/images/smartphone-call.png" style="width: 100px; height: 100px;"/>
+									<img src="http://211.63.89.132:8080/propofol_prj/common/images/smartphone-call.png" style="width: 100px; height: 100px;"/>
 								</div>
 								<div class="col-3 mr-auto">
 									<label for="phone_no">핸드폰 번호</label>
@@ -83,7 +83,7 @@
 							<!-- 이메일 주소 -->
 							<div class="row" style="padding-top: 60px;">
 								<div class="col-3" style="text-align: right;">
-									<img src="http://localhost:8080/propofol_prj/common/images/email.png" style="width: 100px; height: 100px;"/>
+									<img src="http://211.63.89.132:8080/propofol_prj/common/images/email.png" style="width: 100px; height: 100px;"/>
 								</div>
 								<div class="col-6 mr-auto">
 									<div class="row">
@@ -103,7 +103,7 @@
 							<!-- 블로그 주소 -->
 							<div class="row" style="padding-top: 60px;">
 								<div class="col-3" style="text-align: right; padding-right: 25px;">
-									<img src="http://localhost:8080/propofol_prj/common/images/blogger-logotype.png" style="width: 90px; height: 90px;"/>
+									<img src="http://211.63.89.132:8080/propofol_prj/common/images/blogger-logotype.png" style="width: 90px; height: 90px;"/>
 								</div>
 								<div class="col-7 mr-auto">
 									<label for="tm_blog">블로그</label>

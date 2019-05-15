@@ -9,7 +9,7 @@
 <title>포트폴리오 게시판</title>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://localhost:8080/propofol_prj/common/css/portfolioList.css">
+<link rel="stylesheet" href="http://211.63.89.132:8080/propofol_prj/common/css/portfolioList.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script> -->
@@ -111,7 +111,7 @@
 						"	    					</div>" + 
 						"	    					<div class='portfolio-list-caption-image'>" + 
 						"	    						<a href='#' data-target='#modalView'>" + 
-						"									<img src='http://localhost:8080/propofol_prj/upload/" + json.thumbnail_img + "' name='showImg' id='showImg' class='img-thumbnail' style='width: 330px; height: 320px;'/>" + 
+						"									<img src='http://211.63.89.132:8080/propofol_prj/upload/" + json.thumbnail_img + "' name='showImg' id='showImg' class='img-thumbnail' style='width: 330px; height: 320px;'/>" + 
 						"	    						</a>" + 
 						"	    					</div>" + 
 						"    					</div>" + 
@@ -175,7 +175,7 @@
 						
 						$("#am_title").attr("value", json_obj.am_title);
 						$("#am_contents").html(json_obj.am_contents);
-						$("#am_upload_img").attr("src", "http://localhost:8080/propofol_prj/upload/" + json_obj.am_upload_img);						
+						$("#am_upload_img").attr("src", "http://211.63.89.132:8080/propofol_prj/upload/" + json_obj.am_upload_img);						
 					} else {
 						$(".modal-body-aboutMe").hide();
 					} // end else
@@ -189,7 +189,7 @@
 						
 						$.each(json_obj.ts_selected_technique, function(i, tech) {
 							addContents += "	<li>";
-							addContents += "		<img src='http://localhost:8080/propofol_prj/common/images/icon_" + tech.technique + ".png' width='120px' height='120px'/>";
+							addContents += "		<img src='http://211.63.89.132:8080/propofol_prj/common/images/icon_" + tech.technique + ".png' width='125px' height='125px'/>";
 							addContents += "	</li>";
 						}) // each
 						
@@ -207,7 +207,7 @@
 							if ("Edu" == exp.exp_cd) {
 								$("#edu_title").attr("value", exp.exp_title);
 								$("#edu_contents").html(exp.exp_contents);
-								$("#edu_upload_img").attr("src", "http://localhost:8080/propofol_prj/upload/" + exp.exp_upload_img);
+								$("#edu_upload_img").attr("src", "http://211.63.89.132:8080/propofol_prj/upload/" + exp.exp_upload_img);
 							} // end if
 						}) // each
 					} else {
@@ -221,7 +221,7 @@
 							if ("Prj" == exp.exp_cd) {
 								$("#prj_title").attr("value", exp.exp_title);
 								$("#prj_contents").html(exp.exp_contents);
-								$("#prj_upload_img").attr("src", "http://localhost:8080/propofol_prj/upload/" + exp.exp_upload_img);
+								$("#prj_upload_img").attr("src", "http://211.63.89.132:8080/propofol_prj/upload/" + exp.exp_upload_img);
 							} // end if
 						}) // each
 					} else {
@@ -255,7 +255,7 @@
 	<!-- header -->
 	<header id="page-header">
 		<!-- navbar -->
-		<c:import url="http://localhost:8080/propofol_prj/common/jsp/navbar.jsp"/>
+		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/navbar.jsp"/>
 	</header>
 	<!-- section -->
 	<section id="page-section">
@@ -270,7 +270,7 @@
 						<!-- topbutton -->
 						<div class="d-flex justify-content-center h-100" id="topbutton">
 							<a href="#">
-								<img src="http://localhost:8080/propofol_prj/common/images/topbutton.png" width="38px" height="38px"/>
+								<img src="http://211.63.89.132:8080/propofol_prj/common/images/topbutton.png" width="38px" height="38px"/>
 							</a>
 						</div>
 						<!-- searchbar -->
@@ -319,7 +319,7 @@
 		    				</div>
 		    				<div class="portfolio-list-caption-image">
 		    					<a href="#" data-target="#modalView">
-									<img src="http://localhost:8080/propofol_prj/upload/${ pls.thumbnail_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 330px; height: 320px;"/>
+									<img src="http://211.63.89.132:8080/propofol_prj/upload/${ pls.thumbnail_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 330px; height: 320px;"/>
 		    					</a>
 		    				</div>
 	    				</div>
@@ -335,7 +335,7 @@
 		</div>
 	</section>
 	<footer class="page-footer font-small bg-dark">
-		<c:import url="http://localhost:8080/propofol_prj/common/jsp/footer.jsp"/>
+		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/footer.jsp"/>
 	</footer>
 </body>
 </html>

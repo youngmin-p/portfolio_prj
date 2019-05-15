@@ -9,7 +9,7 @@
 <title>내 포트폴리오 관리</title>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://localhost:8080/propofol_prj/common/css/myPortfolio.css">
+<link rel="stylesheet" href="http://211.63.89.132:8080/propofol_prj/common/css/myPortfolio.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -67,7 +67,7 @@
 	<!-- header -->
 	<header id="page-header">
 		<!-- navbar -->
-		<c:import url="http://localhost:8080/propofol_prj/common/jsp/navbar.jsp"/>
+		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/navbar.jsp"/>
 	</header>
 	<!-- section -->
 	<section id="page-section">
@@ -92,7 +92,7 @@
 					<!-- 핸드폰 번호 -->
 					<div class="form-group row" style="padding-left: 9px; padding-top: 80px;">
 						<div class="col-3" style="text-align: right; padding-right: 25px;">
-							<img src="http://localhost:8080/propofol_prj/common/images/smartphone-call.png" style="width: 100px; height: 100px;"/>
+							<img src="http://211.63.89.132:8080/propofol_prj/common/images/smartphone-call.png" style="width: 100px; height: 100px;"/>
 						</div>
 						<div class="col-3 mr-auto">
 							<label for="phone_no">핸드폰 번호</label>
@@ -106,7 +106,7 @@
 					<!-- 이메일 주소 -->
 					<div class="form-group row" style="padding-left: 9px; padding-top: 20px;">
 						<div class="col-3" style="text-align: right;">
-							<img src="http://localhost:8080/propofol_prj/common/images/email.png" style="width: 100px; height: 100px;"/>
+							<img src="http://211.63.89.132:8080/propofol_prj/common/images/email.png" style="width: 100px; height: 100px;"/>
 						</div>
 						<div class="col-6 mr-auto">
 							<div class="row">
@@ -133,7 +133,7 @@
 					<!-- 블로그 주소 -->
 					<div class="form-group row" style="padding-left: 9px; padding-top: 20px;">
 						<div class="col-3" style="text-align: right; padding-right: 25px;">
-							<img src="http://localhost:8080/propofol_prj/common/images/blogger-logotype.png" style="width: 90px; height: 90px;"/>
+							<img src="http://211.63.89.132:8080/propofol_prj/common/images/blogger-logotype.png" style="width: 90px; height: 90px;"/>
 						</div>
 						<div class="col-7 mr-auto">
 							<label for="blog">블로그</label>
@@ -161,7 +161,7 @@
 		</div>
 	</section>
 	<footer class="page-footer font-small bg-dark">
-		<c:import url="http://localhost:8080/propofol_prj/common/jsp/footer.jsp"/>
+		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/footer.jsp"/>
 	</footer>
 </body>
 </html>

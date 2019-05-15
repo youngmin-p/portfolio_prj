@@ -9,7 +9,7 @@
 <title>내 포트폴리오 관리</title>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://localhost:8080/propofol_prj/common/css/myPortfolio.css">
+<link rel="stylesheet" href="http://211.63.89.132:8080/propofol_prj/common/css/myPortfolio.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -105,7 +105,7 @@
 	<!-- header -->
 	<header id="page-header">
 		<!-- navbar -->
-		<c:import url="http://localhost:8080/propofol_prj/common/jsp/navbar.jsp"/>
+		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/navbar.jsp"/>
 	</header>
 	<!-- section -->
 	<section id="page-section">
@@ -143,10 +143,10 @@
 						<!-- 임시 isExist. 현재 항상 true 상태  -->
 						<c:choose>
 						<c:when test="${ requestScope.isExist }">
-							<img src="http://localhost:8080/propofol_prj/upload/${ mp_search.thumbnail_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
+							<img src="http://211.63.89.132:8080/propofol_prj/upload/${ mp_search.thumbnail_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
 						</c:when>
 						<c:otherwise>
-							<img src="http://localhost:8080/propofol_prj/common/images/no_image.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
+							<img src="http://211.63.89.132:8080/propofol_prj/common/images/no_image.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
 						</c:otherwise>
 						</c:choose>
 							<div style="margin-top: 10px;">
@@ -186,7 +186,7 @@
 		</div>
 	</section>
 	<footer class="page-footer font-small bg-dark">
-		<c:import url="http://localhost:8080/propofol_prj/common/jsp/footer.jsp"/>
+		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/footer.jsp"/>
 	</footer>
 </body>
 </html>

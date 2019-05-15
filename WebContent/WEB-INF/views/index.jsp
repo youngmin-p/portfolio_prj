@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>내 포트폴리오 관리</title>
+<title>Propofol Site</title>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/carousel/">
@@ -13,7 +13,7 @@
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="carousel.css">
 
-<link rel="stylesheet" href="http://localhost:8080/propofol_prj/common/css/myPortfolio.css">
+<link rel="stylesheet" href="http://211.63.89.132:8080/propofol_prj/common/css/myPortfolio.css">
 
 <style>
 	.bd-placeholder-img {
@@ -44,7 +44,7 @@
 	<!-- header -->
 	<header id="page-header">
 		<!-- navbar -->
-		<c:import url="http://localhost:8080/propofol_prj/common/jsp/navbar.jsp"/>
+		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/navbar.jsp"/>
 	</header>
 	<!-- section -->
 	<!-- 
@@ -74,9 +74,9 @@
 				<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
 				<div class="container">
 					<div class="carousel-caption">
-						<h1>Another example headline.</h1>
-						<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-						<p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+						<h1>당신이 최고가 될 수 있습니다.</h1>
+						<p>더 이상 망설이지 마십시오.</p>
+						<p><a class="btn btn-lg btn-primary" href="#" role="button">망설이지 않고 가입하기</a></p>
 					</div>
 				</div>
 			</div>
@@ -84,9 +84,9 @@
 				<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
 				<div class="container">
 					<div class="carousel-caption text-right">
-						<h1>One more for good measure.</h1>
-						<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-						<p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+						<h1>포트폴리오는 역시 Propofol!</h1>
+						<p>...</p>
+						<p><a class="btn btn-lg btn-primary" href="#" role="button">들어오시오</a></p>
 					</div>
 				</div>
 			</div>
@@ -102,7 +102,7 @@
 		</div>
 	</section>
 	<footer class="page-footer font-small bg-dark">
-		<c:import url="http://localhost:8080/propofol_prj/common/jsp/footer.jsp"/>
+		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/footer.jsp"/>
 	</footer>
 </body>
 </html>

@@ -8,7 +8,7 @@
 }
 
 #section-title {
-	background: #FFFFFF url("http://localhost:8080/propofol_prj/common/images/city_1.png") repeat-x;
+	background: #FFFFFF url("http://211.63.89.132:8080/propofol_prj/common/images/background_sky.png") repeat-x;
 	height: 210px;
 	text-align: center;
 }
@@ -183,7 +183,7 @@
 }
 
 #modalBody {
-	min-height: 1000px;
+	min-height: 600px;
 }
 
 /* portfolioView : 자기소개 */
@@ -220,14 +220,15 @@
 }
 
 .modal-body-techStacks-list {
-	text-align: center;
+	padding: 0px 115px;
+	/* text-align: center; */
 }
 
 .modal-body-techStacks-list li {
 	display: inline-block;
 	padding: 10px;
-	width: 140px;
-	height: 140px;
+	width: 145px;
+	height: 145px;
 }
 
 .modal-body-techStacks-tech {
