@@ -2,11 +2,6 @@
     pageEncoding="UTF-8" 
     info="fixed navbar" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!--
-<style type="text/css">
-	.navbar-nav > li > a { padding: 20px 20px; }
-</style>
--->
 		<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
 			<a class="navbar-brand" href="/propofol_prj/index.do">Propofol</a>
 			<ul class="navbar-nav">
@@ -30,21 +25,21 @@
 			<div class="navbar-nav ml-auto">
 				<ul class="navbar-nav">
 					<!-- 비 로그인 상태일 때 -->
-					<c:if test="${ empty sessionScope.user_id }">
+					<c:if test="${ empty param.user_id }">
 					<li class="nav-item">
-						<a class="nav-link" href="#">로그인</a>
+						<a class="nav-link" href="/propofol_prj/member/loginForm.do">로그인</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">회원가입</a>
 					</li>
 					</c:if>
 					<!-- 로그인 상태일 때 -->
-					<c:if test="${ not empty sessionScope.user_id }">
+					<c:if test="${ not empty param.user_id }">
 					<li class="nav-item">
 						<a class="nav-link" href="#">마이페이지</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">로그아웃</a>
+						<a class="nav-link" href="/propofol_prj/member/logoutProcess.do">로그아웃</a>
 					</li>
 					</c:if>
 				</ul>

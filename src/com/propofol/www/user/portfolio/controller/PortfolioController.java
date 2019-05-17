@@ -1,8 +1,6 @@
 package com.propofol.www.user.portfolio.controller;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oreilly.servlet.MultipartRequest;
 import com.propofol.www.user.portfolio.domain.AboutMeSearch;
 import com.propofol.www.user.portfolio.domain.ExperienceSearch;
 import com.propofol.www.user.portfolio.domain.MyPortfolioSearch;
@@ -25,7 +22,6 @@ import com.propofol.www.user.portfolio.service.PortfolioService;
 import com.propofol.www.user.portfolio.service.TechStacksService;
 import com.propofol.www.user.portfolio.service.TellMeService;
 import com.propofol.www.user.portfolio.vo.ExperienceSearchVO;
-import com.propofol.www.user.portfolio.vo.ExperienceVO;
 import com.propofol.www.user.portfolio.vo.TechStacksVO;
 import com.propofol.www.user.portfolio.vo.TellMeVO;
 
@@ -33,7 +29,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,11 +61,12 @@ public class PortfolioController {
 	 * @return
 	 */
 	@RequestMapping(value="/portfolio/myPortfolio.do", method={GET, POST})
-	public String moveMyPortfolio(HttpSession session) {
+	public String moveMyPortfolio(HttpServletRequest request, HttpSession session) {
 		String user_id = (String) session.getAttribute("user_id");
 		
-		// temp value
-		user_id = "young";
+		if (user_id == null || "".equals(user_id)) {
+			session.setAttribute("currentPage", request.getServletPath());
+		} // end if
 		
 		return "forward:/portfolio/chkLogin.do?user_id=" + user_id;
 	} // moveMyPortfolio
@@ -91,7 +87,7 @@ public class PortfolioController {
 		// 로그인 상태에 따라 분기
 		if (loginCnt == 0) {
 			// user_id가 null이면 loginForm으로 이동
-			url = "loginForm.do";
+			url = "redirect:/member/loginForm.do";
 		} // end if
 		
 		if (loginCnt == 1) {
@@ -115,21 +111,16 @@ public class PortfolioController {
 		String session_id = (String) session.getAttribute("user_id");
 		String url = "";
 		
-		System.out.println("session_id = " + session_id + " / user_id = " + user_id);
-		
 		if (user_id.equals(session_id)) {
 			// portfolio 테이블에서 user_id가 존재하면 result가 1이고, 없으면 0
 			// user_id 존재 유무에 따라 1 또는 0을 반환
 			result = mp_service.chkWriteState(user_id);
 		} // end if
 		
-		// temp value
-		result = 1;
-		
 		// 로그인 상태에 따라 분기
 		if (result == 0) {
 			// user_id가 null이면 loginForm으로 이동
-			url = "loginForm.do";
+			url = "redirect:/member/loginForm.do";
 		} // end if
 		
 		if (result == 1) {
@@ -163,18 +154,6 @@ public class PortfolioController {
 			model.addAttribute("mp_search", mp_search);
 			model.addAttribute("isExist", flag);
 		} // end if
-		
-		// temp line
-		MyPortfolioSearch mp_search = mp_service.searchMyPortfolio(user_id);
-		
-		if (mp_search != null) {
-			flag = true;
-		} // end if
-		
-		model.addAttribute("mp_search", mp_search);
-		model.addAttribute("isExist", flag);
-		
-		System.out.println("----- showMyPortfolio에 들어옴 : " + user_id + " / mp_search 객체 : " + mp_search);
 		
 		return "portfolio/myPortfolio";
 	} // moveMyPortfolio
@@ -755,12 +734,13 @@ public class PortfolioController {
 	// -------------------- 포트폴리오 게시판 시작 -------------------- //
 	
 	@RequestMapping(value="/portfolio/portfolioList.do", method=GET)
-	public String movePortfolioList(HttpSession session, Model model) {
+	public String movePortfolioList(HttpServletRequest request, HttpSession session, Model model) {
 		String user_id = (String) session.getAttribute("user_id");
-		String moveURL = "redirect:/error/error.html";
+		String moveURL = "redirect:/member/loginForm.do";
 		
-		// temp data
-		user_id = "young";
+		if (user_id == null || "".equals(user_id)) {
+			session.setAttribute("currentPage", request.getServletPath());
+		} // end if
 		
 		if (user_id != null && !"".equals(user_id)) {
 			List<PortfolioListSearch> plsList = pl_service.searchPortfolioList();
@@ -781,10 +761,6 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		if (user_id != null && !"".equals(user_id)) {
-			
-		} // end if
-		
 		json_obj = pl_service.searchPortfolioListCall(idx);
 		
 		return json_obj.toJSONString();
@@ -798,16 +774,7 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		// temp data
-		user_id = "young";
-		
-		if (user_id != null && !"".equals(user_id)) {
-			
-		} // end if
-		
 		json_obj = pl_service.searchPortfolioView(target_id);
-		
-		System.out.println("----- json 요청 : " + json_obj);
 		
 		return json_obj.toJSONString();
 	} // showPortfolioView

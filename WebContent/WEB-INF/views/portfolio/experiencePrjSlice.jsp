@@ -35,10 +35,10 @@
 						<div class="col-5" style="text-align: center; margin-right: 30px;">
 						<c:choose>
 						<c:when test="${ requestScope.isExist }">
-							<img src="http://211.63.89.132:8080/propofol_prj/upload/${ exp_search.upload_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
+							<img src="http://localhost:8080/propofol_prj/upload/${ exp_search.upload_img }" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
 						</c:when>
 						<c:otherwise>
-							<img src="http://211.63.89.132:8080/propofol_prj/common/images/no_image.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
+							<img src="http://localhost:8080/propofol_prj/common/images/no_image.png" name="showImg" id="showImg" class="img-thumbnail" style="width: 300px; height: 300px;"/>
 						</c:otherwise>
 						</c:choose>
 							<div style="margin-top: 10px;">

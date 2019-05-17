@@ -22,5 +22,6 @@
   <!-- 쿼리문을 가진 XML을 연결 -->
   <mappers>
     <mapper resource="com/propofol/www/user/mapper/portfolio_mapper.xml"/>
+    <mapper resource="com/propofol/www/user/mapper/member_mapper.xml"/>
   </mappers>
 </configuration>

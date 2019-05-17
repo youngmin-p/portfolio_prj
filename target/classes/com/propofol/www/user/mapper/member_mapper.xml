@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.propofol.www.user.portfolio">
+	<!-- 로그인 체크 -->
+	<select id="selectLogin" parameterType="com.propofol.www.user.member.vo.LoginVO" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE USER_ID = #{ user_id } AND PASSWORD = #{ password }
+	</select>
+	
+</mapper>

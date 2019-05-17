@@ -13,7 +13,7 @@
 <!-- Custom styles for this template -->
 <link rel="stylesheet" href="carousel.css">
 
-<link rel="stylesheet" href="http://211.63.89.132:8080/propofol_prj/common/css/myPortfolio.css">
+<link rel="stylesheet" href="http://localhost:8080/propofol_prj/common/css/myPortfolio.css">
 
 <style>
 	.bd-placeholder-img {
@@ -44,7 +44,9 @@
 	<!-- header -->
 	<header id="page-header">
 		<!-- navbar -->
-		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/navbar.jsp"/>
+		<c:import url="http://localhost:8080/propofol_prj/common/jsp/navbar.jsp">
+			<c:param name="user_id" value="${ user_id }"/>
+		</c:import>
 	</header>
 	<!-- section -->
 	<!-- 
@@ -102,7 +104,7 @@
 		</div>
 	</section>
 	<footer class="page-footer font-small bg-dark">
-		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/footer.jsp"/>
+		<c:import url="http://localhost:8080/propofol_prj/common/jsp/footer.jsp"/>
 	</footer>
 </body>
 </html>

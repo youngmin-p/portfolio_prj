@@ -23,13 +23,15 @@
 						<!-- 자기소개 -->
 						<div class="modal-body-aboutMe">
 							<div class="modal-body-title">자기소개</div>
-							<div class="row">
-								<div class="col-5 modal-body-aboutMe-image">
-									<img src="" name="am_upload_img" id="am_upload_img" class="img-thumbnail" style="width: 300px; height: 300px;"/>
-								</div>
-								<div class="col-6">
-									<input type="text" value="" name="am_title" id="am_title" class="modal-body-aboutMe-title form-control" disabled="disabled"/>
-									<textarea name="am_contents" id="am_contents" class="modal-body-aboutMe-contents form-control" rows="8" disabled="disabled"></textarea>
+							<div class="container-fluid">
+								<div class="row">
+									<div class="col-5 modal-body-aboutMe-image">
+										<img src="" name="am_upload_img" id="am_upload_img" class="img-thumbnail" style="width: 300px; height: 300px;"/>
+									</div>
+									<div class="col-6">
+										<input type="text" value="" name="am_title" id="am_title" class="modal-body-aboutMe-title form-control" disabled="disabled"/>
+										<textarea name="am_contents" id="am_contents" class="modal-body-aboutMe-contents form-control" rows="8" disabled="disabled"></textarea>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -69,11 +71,11 @@
 							</div>
 						</div>
 						<div class="modal-body-tellMe">
-							<div class="modal-body-title">교육사항</div>
+							<div class="modal-body-title">연락처</div>
 							<!-- 핸드폰 번호 -->
 							<div class="row" style="padding-top: 30px;">
 								<div class="col-3" style="text-align: right; padding-right: 25px;">
-									<img src="http://211.63.89.132:8080/propofol_prj/common/images/smartphone-call.png" style="width: 100px; height: 100px;"/>
+									<img src="http://localhost:8080/propofol_prj/common/images/smartphone-call.png" style="width: 100px; height: 100px;"/>
 								</div>
 								<div class="col-3 mr-auto">
 									<label for="phone_no">핸드폰 번호</label>
@@ -83,7 +85,7 @@
 							<!-- 이메일 주소 -->
 							<div class="row" style="padding-top: 60px;">
 								<div class="col-3" style="text-align: right;">
-									<img src="http://211.63.89.132:8080/propofol_prj/common/images/email.png" style="width: 100px; height: 100px;"/>
+									<img src="http://localhost:8080/propofol_prj/common/images/email.png" style="width: 100px; height: 100px;"/>
 								</div>
 								<div class="col-6 mr-auto">
 									<div class="row">
@@ -103,7 +105,7 @@
 							<!-- 블로그 주소 -->
 							<div class="row" style="padding-top: 60px;">
 								<div class="col-3" style="text-align: right; padding-right: 25px;">
-									<img src="http://211.63.89.132:8080/propofol_prj/common/images/blogger-logotype.png" style="width: 90px; height: 90px;"/>
+									<img src="http://localhost:8080/propofol_prj/common/images/blogger-logotype.png" style="width: 90px; height: 90px;"/>
 								</div>
 								<div class="col-7 mr-auto">
 									<label for="tm_blog">블로그</label>

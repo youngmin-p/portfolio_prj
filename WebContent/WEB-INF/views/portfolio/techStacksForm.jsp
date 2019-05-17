@@ -9,7 +9,7 @@
 <title>내 포트폴리오 관리</title>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://211.63.89.132:8080/propofol_prj/common/css/myPortfolio.css">
+<link rel="stylesheet" href="http://localhost:8080/propofol_prj/common/css/myPortfolio.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -64,7 +64,9 @@
 	<!-- header -->
 	<header id="page-header">
 		<!-- navbar -->
-		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/navbar.jsp"/>
+		<c:import url="http://localhost:8080/propofol_prj/common/jsp/navbar.jsp">
+			<c:param name="user_id" value="${ user_id }"/>
+		</c:import>
 	</header>
 	<!-- section -->
 	<section id="page-section">
@@ -159,7 +161,7 @@
 		</div>
 	</section>
 	<footer class="page-footer font-small bg-dark">
-		<c:import url="http://211.63.89.132:8080/propofol_prj/common/jsp/footer.jsp"/>
+		<c:import url="http://localhost:8080/propofol_prj/common/jsp/footer.jsp"/>
 	</footer>
 </body>
 </html>
