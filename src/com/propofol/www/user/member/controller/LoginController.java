@@ -31,6 +31,7 @@ public class LoginController {
 	public String processLogin(LoginVO l_vo, HttpSession session, RedirectAttributes redirect) {
 		boolean flag = false;
 		
+		String currentPage = (String) session.getAttribute("currentPage");
 		String moveURL = "redirect:./loginForm.do";
 		
 		flag = m_service.searchLogin(l_vo);
@@ -39,7 +40,11 @@ public class LoginController {
 			session.setAttribute("user_id", l_vo.getUser_id());
 			session.setMaxInactiveInterval(60 * 10 * 1 * 1);
 			
-			moveURL = "redirect:" + session.getAttribute("currentPage");
+			if (currentPage != null) {
+				moveURL = "redirect:" + currentPage;	
+			} else {
+				moveURL = "redirect:/index.do";
+			} // end else
 		} else {
 			redirect.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
 		} // end else

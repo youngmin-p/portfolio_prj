@@ -28,13 +28,15 @@
 		
 		imageCaptionHover();
 		
-		onTheBottomScroll();
+		resetModalView();
 		
 		getPortfolioOneDetail();
 		
-		/* 이미지를 클릭했을 때 비동기 전송으로 json 형태로 데이터를 받아와서, modal 창으로 화면을 띄워준다. */
+		onTheBottomScroll();
 		
-		// 스크롤이 하단에 위치하게 되면 ajax로 데이터를 요청해서 성공 시에 func를 반복 실행하도록 하면 될 듯
+		searchEnter();
+		
+		searchPortfolioList();
 	}); // ready
 	
 	function moveFixBar() {
@@ -70,7 +72,7 @@
 	
 	function onTheBottomScroll() {
 		$(window).scroll(function() {
-			if ($(this).scrollTop() >= $(document).height() - $(window).height()) {
+			if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
 				/* 문서의 끝에 도달하면 게시글 목록 호출 */
 				setTimeout(function() {
 					getPortfolioList();
@@ -130,11 +132,16 @@
 		}); // ajax
 	} // getPortfolioList
 	
+	function resetModalView() {
+		$(".modal-body-aboutMe").hide();
+		$(".modal-body-techStacks").hide();
+		$(".modal-body-experience-edu").hide();
+		$(".modal-body-experience-prj").hide();
+		$(".modal-body-tellMe").hide();
+	} // resetModalView
+	
 	function getPortfolioOneDetail() {
-		$(".portfolio-list-caption-contents").click(function() {
-			// data가 "undefined"인 경우에는 error page로 이동
-			//alert($(this).find(".portfolio-list-caption-data").data("user_id"));
-			
+		$(".portfolio-list-caption-contents").off("click").on("click", function() {
 			var target_id = $(this).find(".portfolio-list-caption-data").data("user_id");
 			
 			$.ajax({
@@ -170,15 +177,15 @@
 					$("#tm_domain").attr("value", "");
 					$("#tm_blog").attr("value", "");
 					
+					resetModalView();
+					
 					if (json_obj.am_result) {
 						$(".modal-body-aboutMe").show();
 						
 						$("#am_title").attr("value", json_obj.am_title);
 						$("#am_contents").html(json_obj.am_contents);
 						$("#am_upload_img").attr("src", "http://localhost:8080/propofol_prj/upload/" + json_obj.am_upload_img);						
-					} else {
-						$(".modal-body-aboutMe").hide();
-					} // end else
+					} // end if
 					
 					if (json_obj.ts_result) {
 						$(".modal-body-techStacks").show();
@@ -196,9 +203,7 @@
 						addContents += "</ul>";
 						
 						$(".modal-body-techStacks-tech").html(addContents);
-					} else {
-						$(".modal-body-techStacks").hide();
-					} // end else
+					} // end if
 					
 					if (json_obj.edu_result) {
 						$(".modal-body-experience-edu").show();
@@ -210,9 +215,7 @@
 								$("#edu_upload_img").attr("src", "http://localhost:8080/propofol_prj/upload/" + exp.exp_upload_img);
 							} // end if
 						}) // each
-					} else {
-						$(".modal-body-experience-edu").hide();
-					} // end else
+					} // end if
 					
 					if (json_obj.prj_result) {
 						$(".modal-body-experience-prj").show();
@@ -224,9 +227,7 @@
 								$("#prj_upload_img").attr("src", "http://localhost:8080/propofol_prj/upload/" + exp.exp_upload_img);
 							} // end if
 						}) // each
-					} else {
-						$(".modal-body-experience-prj").hide();
-					} // end else
+					} // end if
 					
 					if (json_obj.tm_result) {
 						$(".modal-body-tellMe").show();
@@ -235,9 +236,7 @@
 						$("#tm_email").attr("value", json_obj.tm_email);
 						$("#tm_domain").attr("value", json_obj.tm_domain);
 						$("#tm_blog").attr("value", json_obj.tm_blog);
-					} else {
-						$(".modal-body-tellMe").hide();
-					} // end else
+					} // end if
 				}, // success
 				error: function(xhr) {
 					alert(xhr.status + "\n" + xhr.statusText);
@@ -245,10 +244,38 @@
 			}); // ajax
 			
 			$("#modalView").modal();
-			
+				
 			return false;
 		}); // click
 	} // getPortfolioOneDetail
+	
+	function searchEnter() {
+		$("#search").keydown(function(evt) {
+			if (evt.keyCode == 13) {
+				$(".search_icon").click();
+			} // end if
+		}); // keydown
+	} // searchEnter
+	
+	function searchPortfolioList() {
+		$(".search_icon").click(function() {
+			var search = $("#search");
+			
+			if (search.val().trim() == "") {
+				search.val("");
+				
+				alert("검색어를 입력해주세요.");
+				
+				return false;
+			} // end if
+			
+			$("#searchFrm").attr("action", "./portfolioSearch.do");
+			
+			$("#searchFrm").submit();
+			
+			return false;
+		}); // click
+	} // searchPortfolioList
 </script>
 </head>
 <body>
@@ -264,7 +291,7 @@
 		<div id="section-title">
 			<h1>SHOW YOUR PORTFOLIO!</h1>
 		</div>
-		<!-- searchFrm에서 검색 발생 시 어떤 방식으로 데이터를 가져올 것인지? -->
+		<!-- 제목으로 검색 -->
 		<div id="searchbar">
 			<form name="searchFrm" id="searchFrm" method="get">
 				<div id="section-search">
@@ -278,7 +305,7 @@
 						<!-- searchbar -->
 						<div class="d-flex justify-content-center h-100" id="section-search-sb">
 							<div class="searchbar">
-								<input type="text" name="search" id="search" class="search_input" placeholder="검색어를 입력해주세요...">
+								<input type="text" name="keyword" id="search" class="search_input" placeholder="검색어를 입력해주세요...">
 								<a href="#" class="search_icon"><i class="fas fa-search"></i></a>
 							</div>
 						</div>

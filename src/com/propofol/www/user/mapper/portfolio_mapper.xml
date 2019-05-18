@@ -3,19 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.propofol.www.user.portfolio">
-	<!-- 
-	<resultMap type="kr.co.sist.domain.Notice" id="noticeResult">
-		<result column="NUM" property="num"/>
-		<result column="SUBJECT" property="subject"/>
-	</resultMap>
-	<select id="noticeList" resultMap="noticeResult">
-		SELECT NUM, SUBJECT
-		FROM (SELECT ROW_NUMBER() OVER(ORDER BY W_DATE DESC) R_NUM, NUM, SUBJECT
-		      FROM DIARY)
-		WHERE R_NUM BETWEEN 1 AND 5
-	</select>
-	 -->
-	
 	<!-- 포트폴리오 등록 여부 조회 -->
 	<select id="writeState" parameterType="String" resultType="int">
 		SELECT COUNT(USER_ID)
@@ -190,5 +177,18 @@
 		WHERE USER_ID = #{ target_id }
 	</select>
 	
+	<!-- 포트폴리오 게시글 조회수 증가 -->
+	<update id="updatePortfolioHits" parameterType="String">
+		UPDATE PORTFOLIO
+		SET HITS = HITS + 1
+		WHERE USER_ID = #{ target_id }
+	</update>
 	
+	<!-- 포트폴리오 게시글 제목으로 조회 -->
+	<select id="searchPortfolioList" parameterType="String" resultType="com.propofol.www.user.portfolio.domain.PortfolioListSearch">
+		SELECT NUM, THUMBNAIL_IMG, TITLE, WRITE_DT, USER_ID, HITS
+		FROM (SELECT ROW_NUMBER() OVER(ORDER BY WRITE_DT DESC) NUM, THUMBNAIL_IMG, TITLE, TO_CHAR(WRITE_DT, 'YYYY-MM-DD') WRITE_DT, USER_ID, HITS
+		      FROM PORTFOLIO)
+		WHERE title like '%' || #{ keyword } || '%'
+	</select>
 </mapper>

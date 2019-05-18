@@ -553,4 +553,41 @@ public class PortfolioDAO {
 		return pvt_search;
 	} // selectPortfolioViewTitle
 	
+	public int updatePortfolioHits(String target_id) {
+		int result = 0;
+		
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
+		
+		result = ss.update("updatePortfolioHits", target_id);
+		
+		ss.commit();
+		
+		ss.close();
+		
+		return result;
+	} // updatePortfolioHits
+	
+	public List<PortfolioListSearch> searchPortfolioList(String keyword) {
+		List<PortfolioListSearch> plsList = null;
+		
+		SqlSession ss = mb_dao.getSessionFactory().openSession();
+		
+		plsList = ss.selectList("searchPortfolioList", keyword);
+		
+		return plsList;
+	} // searchPortfolioList
+	
+	public static void main(String[] args) {
+		PortfolioDAO p_dao = new PortfolioDAO();
+		
+		String keyword = "포트폴리오";
+		
+		List<PortfolioListSearch> pl_search = p_dao.searchPortfolioList(keyword);
+		
+		for (PortfolioListSearch pls : pl_search) {
+			System.out.println(pls);
+		}
+		
+	}
+	
 } // class

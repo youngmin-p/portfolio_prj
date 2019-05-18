@@ -40,10 +40,6 @@
 				$("#tmFrm").submit();
 			} // end if
 		}); // click
-		
-		$("#domain").change(function() {
-			alert($("#domain").val());
-		}); // change
 	}); // ready
 	
 	$(window).load(function() {

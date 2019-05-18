@@ -46,8 +46,6 @@ public class PortfolioService {
 	 * @return
 	 */
 	public List<PortfolioListSearch> searchPortfolioList() {
-		int cnt = portfolioTotalCount();
-		
 		List<PortfolioListSearch> plsList = p_dao.selectPortfolioList();
 		
 		return plsList;
@@ -204,6 +202,22 @@ public class PortfolioService {
 		
 		return json_obj;
 	} // searchPortfolioView
+	
+	public void upPortfolioHits(String target_id) {
+		
+		p_dao.updatePortfolioHits(target_id);
+	} // upPortfolioHits
+	
+	/**
+	 * 포트폴리오 게시글 : 제목으로 조회
+	 * @param keyword
+	 * @return
+	 */
+	public List<PortfolioListSearch> searchPortfolioList(String keyword) {
+		List<PortfolioListSearch> plsList = p_dao.searchPortfolioList(keyword);
+		
+		return plsList;
+	} // searchPortfolioList
 	
 	// -------------------- 포트폴리오 게시판 종료 -------------------- //
 	

@@ -80,7 +80,7 @@ public class MyPortfolioService {
 		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest(
-				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+				request, "C:/Users/Park/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
 		
 		MyPortfolioVO mp_vo = new MyPortfolioVO(
 				(String) request.getAttribute("user_id"), mr.getFilesystemName("thumbnail_img"), 
@@ -101,10 +101,17 @@ public class MyPortfolioService {
 		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest(
-				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+				request, "C:/Users/Park/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+		
+		String prev_img = mr.getParameter("prev_img");
+		String thumbnail_img = mr.getFilesystemName("thumbnail_img");
+		
+		if (thumbnail_img == null || "".equals(thumbnail_img)) {
+			thumbnail_img = prev_img;
+		} // end if
 		
 		MyPortfolioVO mp_vo = new MyPortfolioVO(
-				(String) request.getAttribute("user_id"), mr.getFilesystemName("thumbnail_img"), 
+				(String) request.getAttribute("user_id"), thumbnail_img, 
 				mr.getParameter("title"), mr.getParameter("public_st"));
 		
 		flag = (p_dao.updateMyPortfolio(mp_vo) == 1);

@@ -51,7 +51,7 @@ public class ExperienceService {
 		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest(
-				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+				request, "C:/Users/Park/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
 		
 		ExperienceVO exp_vo = new ExperienceVO(
 				(String) request.getAttribute("user_id"), mr.getParameter("exp_cd"), mr.getParameter("title"), 
@@ -78,13 +78,18 @@ public class ExperienceService {
 		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest(
-				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+				request, "C:/Users/Park/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+		
+		String prev_img = mr.getParameter("prev_img");
+		String upload_img = mr.getFilesystemName("upload_img");
+		
+		if (upload_img == null || "".equals(upload_img)) {
+			upload_img = prev_img;
+		} // end if
 		
 		ExperienceVO exp_vo = new ExperienceVO(
 				(String) request.getAttribute("user_id"), mr.getParameter("exp_cd"), mr.getParameter("title"), 
-				mr.getParameter("contents"), mr.getFilesystemName("upload_img"));
-		
-		System.out.println("----- exp_vo °´Ã¼ °ª " + exp_vo.toString());
+				mr.getParameter("contents"), upload_img);
 		
 		flag = (p_dao.updateExperience(exp_vo) == 1);
 		
@@ -107,7 +112,7 @@ public class ExperienceService {
 		boolean flag = false;
 
 		MultipartRequest mr = new MultipartRequest(
-				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+				request, "C:/Users/Park/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
 		
 		ExperienceResetVO expr_vo = new ExperienceResetVO(
 				(String) request.getAttribute("user_id"), mr.getParameter("exp_cd"));

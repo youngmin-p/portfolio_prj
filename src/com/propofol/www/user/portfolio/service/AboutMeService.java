@@ -49,7 +49,7 @@ public class AboutMeService {
 		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest(
-				request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+				request, "C:/Users/Park/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
 		
 		AboutMeVO am_vo = new AboutMeVO(
 				(String) request.getAttribute("user_id"), mr.getParameter("title"), 
@@ -70,11 +70,18 @@ public class AboutMeService {
 		boolean flag = false;
 		
 		MultipartRequest mr = new MultipartRequest
-				(request, "C:/Users/owner/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+				(request, "C:/Users/Park/git/propofol_prj/WebContent/upload", 1024 * 1024 * 10, "UTF-8", new DefaultFileRenamePolicy());
+		
+		String prev_img = mr.getParameter("prev_img");
+		String upload_img = mr.getFilesystemName("upload_img");
+		
+		if (upload_img == null || "".equals(upload_img)) {
+			upload_img = prev_img;
+		} // end if
 		
 		AboutMeVO am_vo = new AboutMeVO(
 				(String) request.getAttribute("user_id"), mr.getParameter("title"), 
-				mr.getParameter("contents"), mr.getFilesystemName("upload_img"));
+				mr.getParameter("contents"), upload_img);
 		
 		flag = (p_dao.updateAboutMe(am_vo) == 1);
 		

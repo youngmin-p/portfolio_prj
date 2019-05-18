@@ -171,14 +171,12 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		user_id = "young";
-		
 		if (!"".equals(user_id) && !user_id.isEmpty()) {
 			request.setAttribute("user_id", user_id);			
 		} // end if
 		
 		try {
-			if (!"".equals(user_id) && user_id != null) {
+			if (user_id != null && !"".equals(user_id)) {
 				flag = mp_service.addMyPortfolio(request);
 				
 				if (flag) {
@@ -208,10 +206,7 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		// temp data
-		user_id = "young";
-		
-		if (!"".equals(user_id) && !user_id.isEmpty()) {
+		if (!"".equals(user_id) && !"".equals(user_id)) {
 			request.setAttribute("user_id", user_id);			
 		} // end if
 		
@@ -242,10 +237,7 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		// temp data
-		user_id = "young";
-		
-		if (!"".equals(user_id) && user_id != null) {
+		if (user_id != null && !"".equals(user_id)) {
 			flag = mp_service.removeMyPortfolio(user_id);
 			
 			if (flag) {
@@ -272,12 +264,8 @@ public class PortfolioController {
 		
 		String user_id = (String) session.getAttribute("user_id");
 		
-		user_id = "young";
-		
 		if (user_id != null && !"".equals(user_id)) {
 			AboutMeSearch am_search = am_service.searchAboutMe(user_id);
-			
-			System.out.println(am_search);
 			
 			if (am_search != null) {
 				flag = true;
@@ -296,8 +284,6 @@ public class PortfolioController {
 		
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
-		
-		user_id = "young";
 		
 		try {
 			if (user_id != null && !"".equals(user_id)) {
@@ -332,9 +318,6 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		// temp data
-		user_id = "young";
-		
 		try {
 			if (user_id != null && !"".equals(user_id)) {
 				request.setAttribute("user_id", user_id);
@@ -367,9 +350,6 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		// temp data
-		user_id = "young";
-		
 		if (user_id != null && !"".equals(user_id)) {
 			flag = am_service.resetAboutMe(user_id);
 			
@@ -391,9 +371,6 @@ public class PortfolioController {
 		
 		String user_id = (String) session.getAttribute("user_id");
 		
-		// temp data
-		user_id = "young";
-		
 		if (user_id != null && !"".equals(user_id)) {
 			TechStacksSearch ts_search = ts_service.searchTechStacks(user_id);
 			
@@ -414,9 +391,6 @@ public class PortfolioController {
 		
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
-		
-		// temp data
-		user_id = "young";
 		
 		if (user_id != null && !"".equals(user_id)) {
 			TechStacksVO ts_vo = new TechStacksVO();
@@ -443,9 +417,6 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		// temp data
-		user_id = "young";
-		
 		if (user_id != null && !"".equals(user_id)) {
 			TechStacksVO ts_vo = new TechStacksVO();
 			
@@ -471,9 +442,6 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		// temp data
-		user_id = "young";
-		
 		if (user_id != null && !"".equals(user_id)) {
 			flag = ts_service.resetTechStacks(user_id);
 			
@@ -494,9 +462,6 @@ public class PortfolioController {
 		boolean flag = false;
 		
 		String user_id = (String) session.getAttribute("user_id");
-		
-		// temp data
-		user_id = "young";
 		
 		if (user_id != null && !"".equals(user_id)) {
 			ExperienceSearchVO es_vo = new ExperienceSearchVO();
@@ -528,9 +493,6 @@ public class PortfolioController {
 		String moveURL = "redirect:/error/error.html";
 		String exp_cd = "";
 		String word = "";
-		
-		// temp data
-		user_id = "young";
 		
 		try {
 			if (user_id != null && !"".equals(user_id)) {
@@ -566,9 +528,6 @@ public class PortfolioController {
 		String exp_cd = "";
 		String word = "";
 		
-		// temp data
-		user_id = "young";
-		
 		try {
 			if (user_id != null && !"".equals(user_id)) {
 				request.setAttribute("user_id", user_id);
@@ -602,9 +561,6 @@ public class PortfolioController {
 		String moveURL = "redirect:/error/error.html";
 		String exp_cd = "";
 		String word = "";
-		
-		// temp data
-		user_id = "young";
 		
 		try {
 			if (user_id != null && !"".equals(user_id)) {
@@ -641,9 +597,6 @@ public class PortfolioController {
 		
 		String user_id = (String) session.getAttribute("user_id");
 		
-		// temp data
-		user_id = "young";
-		
 		if (user_id != null && !"".equals(user_id)) {
 			TellMeSearch tm_search = tm_service.searchTellMe(user_id);
 			
@@ -664,9 +617,6 @@ public class PortfolioController {
 		
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
-		
-		// temp data
-		user_id = "young";
 		
 		if (user_id != null && !"".equals(user_id)) {
 			tm_vo.setUser_id(user_id);
@@ -690,9 +640,6 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		// temp data
-		user_id = "young";
-		
 		if (user_id != null && !"".equals(user_id)) {
 			tm_vo.setUser_id(user_id);
 			
@@ -714,9 +661,6 @@ public class PortfolioController {
 		
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
-		
-		// temp data
-		user_id = "young";
 		
 		if (user_id != null && !"".equals(user_id)) {
 			flag = tm_service.resetTellMe(user_id);
@@ -774,9 +718,27 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
+		pl_service.upPortfolioHits(target_id);
+		
 		json_obj = pl_service.searchPortfolioView(target_id);
 		
 		return json_obj.toJSONString();
 	} // showPortfolioView
+	
+	@RequestMapping(value="/portfolio/portfolioSearch.do", method=GET)
+	public String searchPortfolio(@RequestParam(name="keyword", required=false) String keyword, HttpSession session, Model model) {
+		String user_id = (String) session.getAttribute("user_id");
+		String moveURL = "redirect:/member/loginForm.do";
+		
+		if (user_id != null && !"".equals(user_id)) {
+			List<PortfolioListSearch> plsList = pl_service.searchPortfolioList(keyword);
+			
+			moveURL = "portfolio/portfolioList";
+			
+			model.addAttribute("plsList", plsList);
+		} // end if
+		
+		return moveURL;
+	} // searchPortfolio
 	
 } // class
