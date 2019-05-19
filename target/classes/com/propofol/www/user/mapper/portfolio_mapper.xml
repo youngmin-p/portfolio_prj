@@ -151,7 +151,8 @@
 	<select id="selectPortfolioList" parameterType="int" resultType="com.propofol.www.user.portfolio.domain.PortfolioListSearch">
 		SELECT NUM, THUMBNAIL_IMG, TITLE, WRITE_DT, USER_ID, HITS
 		FROM (SELECT ROW_NUMBER() OVER(ORDER BY WRITE_DT DESC) NUM, THUMBNAIL_IMG, TITLE, TO_CHAR(WRITE_DT, 'YYYY-MM-DD') WRITE_DT, USER_ID, HITS
-		      FROM PORTFOLIO)
+		      FROM PORTFOLIO
+		      WHERE PUBLIC_ST = 'Y')
 		WHERE NUM BETWEEN 1 AND 20
 	</select>
 	
@@ -159,7 +160,8 @@
 	<select id="selectPortfolioListCall" parameterType="com.propofol.www.user.portfolio.vo.PortfolioListIdx" resultType="com.propofol.www.user.portfolio.domain.PortfolioListSearch">
 		SELECT NUM, THUMBNAIL_IMG, TITLE, WRITE_DT, USER_ID, HITS
 		FROM (SELECT ROW_NUMBER() OVER(ORDER BY WRITE_DT DESC) NUM, THUMBNAIL_IMG, TITLE, TO_CHAR(WRITE_DT, 'YYYY-MM-DD') WRITE_DT, USER_ID, HITS
-		      FROM PORTFOLIO)
+		      FROM PORTFOLIO
+		      WHERE PUBLIC_ST = 'Y')
 		WHERE NUM BETWEEN #{ startIdx } AND #{ endIdx }		
 	</select>
 	
@@ -188,7 +190,8 @@
 	<select id="searchPortfolioList" parameterType="String" resultType="com.propofol.www.user.portfolio.domain.PortfolioListSearch">
 		SELECT NUM, THUMBNAIL_IMG, TITLE, WRITE_DT, USER_ID, HITS
 		FROM (SELECT ROW_NUMBER() OVER(ORDER BY WRITE_DT DESC) NUM, THUMBNAIL_IMG, TITLE, TO_CHAR(WRITE_DT, 'YYYY-MM-DD') WRITE_DT, USER_ID, HITS
-		      FROM PORTFOLIO)
+		      FROM PORTFOLIO
+		      WHERE PUBLIC_ST = 'Y')
 		WHERE title like '%' || #{ keyword } || '%'
 	</select>
 </mapper>

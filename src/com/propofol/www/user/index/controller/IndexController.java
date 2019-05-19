@@ -1,10 +1,13 @@
-package com.propofol.www.user.portfolio.controller;
+package com.propofol.www.user.index.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.propofol.www.user.index.vo.ContactVO;
+
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,5 +25,13 @@ public class IndexController {
 		
 		return "index";
 	} // moveIndexPage
+	
+	@RequestMapping(value="/contact.do", method=POST)
+	public String contactMe(ContactVO c_vo) {
+		// 메일 서비스 추가
+		
+		
+		return "redirect:/index.do";
+	} // contactMe
 	
 } // class

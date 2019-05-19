@@ -6,6 +6,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.propofol.www.user.member.service.MemberService;
 import com.propofol.www.user.member.vo.LoginVO;
+import com.propofol.www.user.util.SHAEncryption;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -33,6 +34,8 @@ public class LoginController {
 		
 		String currentPage = (String) session.getAttribute("currentPage");
 		String moveURL = "redirect:./loginForm.do";
+		
+		l_vo.setPassword(SHAEncryption.SHAEncoding(l_vo.getPassword()));
 		
 		flag = m_service.searchLogin(l_vo);
 		

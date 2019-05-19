@@ -160,10 +160,6 @@
 					
 					$(".modal-body-techStacks-tech").empty();
 					
-					$(".modalHeader-title").html(json_obj.title);
-					$("#modalHeader-id").html(json_obj.user_id);
-					$("#modalHeader-dt").html(json_obj.write_dt);
-					
 					$("#edu_title").attr("value", "");
 					$("#edu_contents").empty();
 					$("#edu_upload_img").attr("src", "");
@@ -178,6 +174,10 @@
 					$("#tm_blog").attr("value", "");
 					
 					resetModalView();
+					
+					$(".modalHeader-title").html(json_obj.title);
+					$("#modalHeader-id").html(json_obj.user_id);
+					$("#modalHeader-dt").html(json_obj.write_dt);
 					
 					if (json_obj.am_result) {
 						$(".modal-body-aboutMe").show();
