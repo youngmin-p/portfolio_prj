@@ -31,14 +31,14 @@ public class MyPortfolioService {
 	 * @param user_id
 	 * @return
 	 */
-	public int chkLogin(String user_id) {
-		int result = 0;
+	public boolean chkLogin(String user_id) {
+		boolean flag = false;
 		
-		if (user_id != null && !user_id.isEmpty()) {
-			result = 1;
+		if (user_id != null && !"null".equals(user_id)) {
+			flag = true;
 		} // end if
 		
-		return result;
+		return flag;
 	} // chkLogin
 	
 	/**

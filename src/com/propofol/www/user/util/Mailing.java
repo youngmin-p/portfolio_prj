@@ -11,9 +11,12 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.propofol.www.user.index.vo.ContactVO;
+
 public class Mailing {
-	public static void sendNaverEmail(String subject, String text) throws AddressException, MessagingException {
+	public static void sendNaverEmail(ContactVO c_vo) throws AddressException, MessagingException {
 		String host = "smtp.naver.com";
+		String myAddress = "rich0616@naver.com";
 		
 		Properties prop = new Properties();
 		
@@ -30,28 +33,17 @@ public class Mailing {
 		
 		Message msg = new MimeMessage(mailSession);
 		
-		msg.setFrom(new InternetAddress("rich0616@naver.com"));
-		msg.setRecipient(Message.RecipientType.TO, new InternetAddress("rich0616@naver.com"));
+		msg.setFrom(new InternetAddress(myAddress));
+		msg.setRecipient(Message.RecipientType.TO, new InternetAddress(myAddress));
 		
-		msg.setSubject(subject);
-		msg.setText(text);
+		StringBuilder sbSubject = new StringBuilder();
+		
+		sbSubject.append(c_vo.getEmail()).append(" ").append(c_vo.getName()).append("님으로부터 문의 내용이 도착했습니다.");
+		
+		msg.setSubject(sbSubject.toString());
+		msg.setText(c_vo.getMessage());
 		
 		Transport.send(msg);
 	} // sendNaverEmail
-	
-	public static void main(String[] args) {
-		String subject = "테스트 메일입니다.";
-		String text = "테스트 내용입니다. 보낸 사람 정보 : 영민";
-		
-		try {
-			Mailing.sendNaverEmail(subject, text);
-			System.out.println("----- 전송 완료");
-		} catch (AddressException ae) {
-			ae.printStackTrace();
-		} catch (MessagingException me) {
-			me.printStackTrace();
-		}
-		
-	}
 	
 } // class

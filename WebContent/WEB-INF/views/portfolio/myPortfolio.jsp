@@ -71,7 +71,7 @@
 		var isPossibleNames = ["png", "jpg"];
 		var isPossible = false;
 		
-		var fileName = thumbnail_img.substring(thumbnail_img.lastIndexOf(".") + 1);
+		var fileName = thumbnail_img.substring(thumbnail_img.lastIndexOf(".") + 1).toLowerCase();
 		
 		for (var i = 0; i < isPossibleNames.length; i++) {
 			if (fileName == isPossibleNames[i]) {

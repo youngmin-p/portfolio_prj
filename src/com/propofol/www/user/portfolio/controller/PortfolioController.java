@@ -78,24 +78,21 @@ public class PortfolioController {
 	 */
 	@RequestMapping(value="/portfolio/chkLogin.do", method={GET, POST})
 	public String chkLogin(@RequestParam(name="user_id") String user_id) {
-		int loginCnt = 0;
+		boolean flag = false;
 		
-		String url = "";
+		String moveURL = "";
 		
-		loginCnt = mp_service.chkLogin(user_id);
+		flag = mp_service.chkLogin(user_id);
 		
-		// 로그인 상태에 따라 분기
-		if (loginCnt == 0) {
-			// user_id가 null이면 loginForm으로 이동
-			url = "redirect:/member/loginForm.do";
-		} // end if
-		
-		if (loginCnt == 1) {
+		if (flag) {
 			// user_id가 null이 아니면 writeState로 이동
-			url = "forward:/portfolio/writeState.do";
+			moveURL = "forward:/portfolio/writeState.do";
+		} else {
+			// user_id가 null이면 loginForm으로 이동
+			moveURL = "redirect:/member/loginForm.do";
 		} // end else
 		
-		return url;
+		return moveURL;
 	} // chkLogin
 	
 	/**
@@ -111,6 +108,8 @@ public class PortfolioController {
 		String session_id = (String) session.getAttribute("user_id");
 		String url = "";
 		
+		// ----- 버그 수정 필요 -----
+		// chkWriteState 호출 시 loginForm이 아니라 myPortfolio로 넘어가야 함.
 		if (user_id.equals(session_id)) {
 			// portfolio 테이블에서 user_id가 존재하면 result가 1이고, 없으면 0
 			// user_id 존재 유무에 따라 1 또는 0을 반환
@@ -120,7 +119,8 @@ public class PortfolioController {
 		// 로그인 상태에 따라 분기
 		if (result == 0) {
 			// user_id가 null이면 loginForm으로 이동
-			url = "redirect:/member/loginForm.do";
+//			url = "redirect:/member/loginForm.do";
+			url = "forward:/portfolio/showMyPortfolio.do";
 		} // end if
 		
 		if (result == 1) {
@@ -171,8 +171,8 @@ public class PortfolioController {
 		String user_id = (String) session.getAttribute("user_id");
 		String moveURL = "redirect:/error/error.html";
 		
-		if (!"".equals(user_id) && !user_id.isEmpty()) {
-			request.setAttribute("user_id", user_id);			
+		if (user_id != null && !"".equals(user_id)) {
+			request.setAttribute("user_id", user_id);
 		} // end if
 		
 		try {

@@ -195,9 +195,14 @@
 	min-height: 600px;
 }
 
+.modal-body-row {
+	margin-bottom: 50px;
+}
+
 /* portfolioView : ÀÚ±â¼Ò°³ */
 .modal-body-title {
-	margin: 35px 110px;
+	margin: 50px 0px;
+	text-align: center;
 	font-size: 28px;
 	font-weight: bold;
 	font-family: ³ª´®°íµñ;
@@ -209,11 +214,11 @@
 }
 
 .modal-body-aboutMe-image {
-	text-align: center;
+	width: 100%;
+	height: auto;
 }
 
 .modal-body-aboutMe-title:disabled {
-	margin-bottom: 53px;
 	background-color: #FFF !important;
 }
 
@@ -251,11 +256,11 @@
 }
 
 .modal-body-experience-edu-image {
-	text-align: center;
+	width: 100%;
+	height: auto;
 }
 
 .modal-body-experience-edu-title:disabled {
-	margin-bottom: 53px;
 	background-color: #FFF !important;
 }
 
@@ -270,11 +275,11 @@
 }
 
 .modal-body-experience-prj-image {
-	text-align: center;
+	width: 100%;
+	height: auto;
 }
 
 .modal-body-experience-prj-title:disabled {
-	margin-bottom: 53px;
 	background-color: #FFF !important;
 }
 
@@ -307,7 +312,7 @@
 
 #modalFooter {
 	padding: 32px;
-	margin-top: 110px;
+	margin-top: 65px;
 	height: 100px;
 	color: #FFF;
 	background-color: #000;

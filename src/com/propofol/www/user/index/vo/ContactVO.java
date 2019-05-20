@@ -2,7 +2,17 @@ package com.propofol.www.user.index.vo;
 
 public class ContactVO {
 	private String name, email, message;
-
+	
+	public ContactVO() {
+		
+	}
+	
+	public ContactVO(String name, String email, String message) {
+		this.name = name;
+		this.email = email;
+		this.message = message;
+	}
+	
 	public String getName() {
 		return name;
 	}

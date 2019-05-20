@@ -52,6 +52,12 @@
 			$("#contactFrm").submit();
 		}); // click
 	}); // ready
+	
+	$(window).load(function() {
+		if ("${ requestScope.msg }" != "") {
+			alert("${ requestScope.msg }");
+		} // end if
+	}) // load
 </script>
 </head>
 <body>
@@ -115,7 +121,7 @@
 			<div class="row">
 				<div class="col">
 					<div class="card">
-						<div class="card-header bg-primary text-white"><i class="fa fa-envelope"></i> Contact us.</div>
+						<div class="card-header bg-primary text-white"><i class="fa fa-envelope"></i> Contact me.</div>
 						<div class="card-body">
 							<form method="POST" name="contactFrm" id="contactFrm">
 								<div class="form-group">
